@@ -3,10 +3,7 @@ package main
 import (
 	"html/template"
 	"net/http"
-)
-
-const (
-	PORT = "8080"
+	"os"
 )
 
 var tmpl = template.Must(template.ParseFiles("templates/index.html"))
@@ -16,9 +13,15 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
 	mux := http.NewServeMux()
+	stylesServer := http.FileServer(http.Dir("static/styles"))
 
 	mux.HandleFunc("/", IndexHandler)
-
-	http.ListenAndServe(":"+PORT, mux)
+	mux.Handle("/static/styles/", http.StripPrefix("/static/styles/", stylesServer))
+	http.ListenAndServe(":"+port, mux)
 }
