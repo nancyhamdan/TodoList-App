@@ -2,28 +2,23 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 	"os"
+
+	"github.com/nancyhamdan/TodoList-App/pkg/handlers"
 )
-
-var tmpl = template.Must(template.ParseFiles("../web/templates/index.html"))
-
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl.Execute(w, nil)
-}
 
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "3000"
+		port = "8080"
 	}
 	fmt.Println("running on port:", port)
 
 	mux := http.NewServeMux()
 	stylesServer := http.FileServer(http.Dir("../web/static/styles"))
 
-	mux.HandleFunc("/", IndexHandler)
+	mux.HandleFunc("/", handlers.IndexHandler)
 	mux.Handle("/static/styles/", http.StripPrefix("/static/styles", stylesServer))
 	http.ListenAndServe(":"+port, mux)
 }
