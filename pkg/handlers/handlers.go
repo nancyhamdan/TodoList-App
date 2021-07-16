@@ -6,6 +6,6 @@ import (
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("../web/templates/index.html"))
+	var tmpl = template.Must(template.ParseFiles("../web/templates/index.gohtml"))
 	tmpl.Execute(w, nil)
 }
