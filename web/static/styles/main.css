@@ -90,12 +90,13 @@ body {
 }
 
 .task-container {
-    width: 90%;
+    width: 92%;
     height: 15%;
     background-color: #D7755B;
+    /* background-color: #277DA1; */
     margin-top: 0.5vh;
     margin-bottom: 1vh;
-    border-radius: 1vw;
+    border-radius: 0.5vw;
     resize: none;
     flex-shrink: 0;
 }
@@ -104,12 +105,24 @@ body {
     width: 0;
 }
 
+.task-text {
+    width: 80%;
+    text-align: left;
+    font-size: 1.3vw;
+    color: #F4F1DE;
+}
+
+.task-dueDate {
+    margin-top: 0.2vh;
+    font-size: 1.1vw;
+    color: rgb(226, 223, 209);
+}
+
 #buttons-container {
     margin-top: 2vh;
     width: 41%;
     display: flex;
     justify-content: flex-end;
-    /* background-color: #F2CC8F; */
     border-radius: 1.5vw;
 }
 
@@ -125,4 +138,47 @@ body {
 .button:hover {
     background-color: #F38141;
     cursor: pointer;
+}
+
+#update-btn {
+    margin-right: 0.5vw;
+}
+
+#delete-btn {
+    background-color: #F94144;
+    margin-right: 9.5vw;
+}
+
+#delete-btn:hover {
+    background-color: rgb(251, 87, 89);
+}
+
+#update-btn,
+#delete-btn {
+    display: none;
+}
+
+.icon {
+    font-size: 3vw;
+    color: #F2CC8F;
+    margin: 0 2vw 0 2vw;
+}
+
+.icon:hover {
+    cursor: pointer;
+}
+
+.checked {
+    color: #F4F1DE;
+}
+
+#completed-div {
+    width: 25%;
+    height: 10%;
+    background-color: #F4F1DE;
+    border-radius: 1vw;
+    margin-top: 0.5vh;
+    margin-bottom: 1.5vh;
+    margin-right: 23vw;
+    flex-shrink: 0;
 }

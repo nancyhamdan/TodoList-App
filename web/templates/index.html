@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ToDo List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/styles/main.css">
 </head>
 
@@ -21,11 +22,30 @@
         </div>
         <div class="flexbox" id="main-content">
             <div id="tasks-container">
-                <div class="task-container"></div>
-                <div class="task-container"></div>
+                <div class="task-container flexbox">
+                    <a class="fa fa-circle icon"></a>
+                    <div class="task-text">
+                        <div class="task-desc">Sample text for task</div>
+                        <div class="task-dueDate">Mon, 19 Jul</div>
+                    </div>
+                    <a class="fa fa-star icon"></a>
+                </div>
+
+                <div class="flexbox" id="completed-div">Completed</div>
+
+                <div class="task-container flexbox">
+                    <a class="fa fa-check-circle icon checked"></a>
+                    <div class="task-text">
+                        <div class="task-desc">Sample text for task</div>
+                        <div class="task-dueDate">Fri, 16 Jul</div>
+                    </div>
+                    <a class="fa fa-star icon checked"></a>
+                </div>
             </div>
 
             <div id="buttons-container">
+                <button class="button" id="update-btn">Update Task</button>
+                <button class="button" id="delete-btn">Delete Task</button>
                 <button class="button" id="add-btn">Add Task</button>
             </div>
         </div>
