@@ -16,9 +16,12 @@ func main() {
 	fmt.Println("running on port:", port)
 
 	mux := http.NewServeMux()
+
 	stylesServer := http.FileServer(http.Dir("../web/static/styles"))
 
 	mux.HandleFunc("/", handlers.IndexHandler)
+
 	mux.Handle("/static/styles/", http.StripPrefix("/static/styles", stylesServer))
+
 	http.ListenAndServe(":"+port, mux)
 }
