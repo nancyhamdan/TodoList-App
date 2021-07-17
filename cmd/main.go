@@ -17,11 +17,10 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	stylesServer := http.FileServer(http.Dir("../web/static/styles"))
-
 	mux.HandleFunc("/", handlers.IndexHandler)
 
-	mux.Handle("/static/styles/", http.StripPrefix("/static/styles", stylesServer))
+	staticFilesServer := http.FileServer(http.Dir("../web/static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
 
 	http.ListenAndServe(":"+port, mux)
 }
