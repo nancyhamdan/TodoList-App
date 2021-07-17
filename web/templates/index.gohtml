@@ -47,12 +47,12 @@
             <div id="buttons-container">
                 <button class="button" id="update-btn">Update Task</button>
                 <button class="button" id="delete-btn">Delete Task</button>
-                <button class="button" id="add-btn">Add Task</button>
+                <button class="button" id="add-btn" onclick="showAddTaskPopUp()">Add Task</button>
             </div>
 
-            <div class="modal flexbox">
-                <div class="modal-content flexbox">
-                    <a class="fa fa-times icon close"></a>
+            <div class="flexbox modal">
+                <div class="flexbox modal-content">
+                    <a class="fa fa-times icon close" onclick="hideAddTaskPopUp()"></a>
                     <div class="flexbox label modal-label">Task</div>
                     <input class="modal-input" type="text">
                     <div class="flexbox label modal-label">Due Date</div>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="modal-buttons">
-                        <button class="button modal-cancel">Cancel</button>
+                        <button class="button modal-cancel" onclick="hideAddTaskPopUp()">Cancel</button>
                         <input type="submit" class="button" value="Submit">
                     </div>
                 </div>
@@ -77,6 +77,8 @@
 
         </div>
     </section>
+
+    <script type="text/javascript" src="../static/scripts/common.js" ></script>
 </body>
 
 </html>

@@ -181,7 +181,7 @@ body {
 }
 
 .modal {
-    /* display: none; */
+    display: none;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -197,6 +197,18 @@ body {
     height: 74%;
     background-color: #81B29A;
     border-radius: 1.5vw;
+    animation: bringPopUpDown 0.5s ease;
+}
+
+@keyframes bringPopUpDown {
+    from {
+        transform: translateY(-20%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
 }
 
 .close {
@@ -267,4 +279,8 @@ body {
 
 .modal-cancel:hover {
     background-color: rgb(251, 87, 89);
+}
+
+.close:hover {
+    color: rgb(228, 225, 209);
 }
