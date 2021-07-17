@@ -75,11 +75,8 @@ body {
 }
 
 #tasks-container {
-    display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    flex-shrink: unset;
     width: 40%;
     height: 70%;
     background-color: #F2CC8F;
@@ -172,7 +169,7 @@ body {
     color: #F4F1DE;
 }
 
-#completed-div {
+.label {
     width: 25%;
     height: 10%;
     background-color: #F4F1DE;
@@ -181,4 +178,31 @@ body {
     margin-bottom: 1.5vh;
     margin-right: 23vw;
     flex-shrink: 0;
+}
+
+.modal {
+    /* display: none; */
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.modal-content {
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 35%;
+    height: 60%;
+    background-color: #81B29A;
+    border-radius: 1.5vw;
+}
+
+.close {
+    margin: 3vh 0 3vh 27vw;
+}
+
+.modal-icon {
+    color: #F4F1DE;
 }

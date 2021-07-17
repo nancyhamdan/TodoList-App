@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ToDo List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.0/css/fontawesome.min.css">
     <link rel="stylesheet" href="../static/styles/main.css">
 </head>
 
@@ -21,7 +22,7 @@
             </ul>
         </div>
         <div class="flexbox" id="main-content">
-            <div id="tasks-container">
+            <div class="flexbox" id="tasks-container">
                 <div class="task-container flexbox">
                     <a class="fa fa-circle icon"></a>
                     <div class="task-text">
@@ -31,7 +32,7 @@
                     <a class="fa fa-star icon"></a>
                 </div>
 
-                <div class="flexbox" id="completed-div">Completed</div>
+                <div class="flexbox label" id="completed-div">Completed</div>
 
                 <div class="task-container flexbox">
                     <a class="fa fa-check-circle icon checked"></a>
@@ -48,6 +49,21 @@
                 <button class="button" id="delete-btn">Delete Task</button>
                 <button class="button" id="add-btn">Add Task</button>
             </div>
+
+            <div class="modal flexbox">
+                <div class="modal-content flexbox">
+                    <a class="fa fa-times icon modal-icon close"></a>
+                    <div class="flexbox label">Task</div>
+                    <input type="text">
+                    <div class="flexbox label">Due Date</div>
+                    <input type="date">
+                    <div class="flexbox ">
+                        <a class="fa fa-sun icon modal-icon"></a>
+                        <a class="fa fa-star icon modal-icon"></a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 </body>
