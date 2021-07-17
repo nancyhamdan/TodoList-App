@@ -52,14 +52,25 @@
 
             <div class="modal flexbox">
                 <div class="modal-content flexbox">
-                    <a class="fa fa-times icon modal-icon close"></a>
-                    <div class="flexbox label">Task</div>
-                    <input type="text">
-                    <div class="flexbox label">Due Date</div>
-                    <input type="date">
-                    <div class="flexbox ">
-                        <a class="fa fa-sun icon modal-icon"></a>
-                        <a class="fa fa-star icon modal-icon"></a>
+                    <a class="fa fa-times icon close"></a>
+                    <div class="flexbox label modal-label">Task</div>
+                    <input class="modal-input" type="text">
+                    <div class="flexbox label modal-label">Due Date</div>
+                    <input class="modal-input" type="date">
+                    <div class="flexbox modal-icons">
+                        <div class="flexbox today-icon">
+                            <a class="fa fa-sun icon modal-icon"></a>
+                            Add to Today
+                        </div>
+
+                        <div class="flexbox modal-star-icon">
+                            <a class="fa fa-star icon modal-icon"></a>
+                            Mark as Important
+                        </div>
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="button modal-cancel">Cancel</button>
+                        <input type="submit" class="button" value="Submit">
                     </div>
                 </div>
             </div>
