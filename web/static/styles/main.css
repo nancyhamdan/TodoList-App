@@ -98,6 +98,10 @@ body {
     flex-shrink: 0;
 }
 
+.task-container:hover {
+    cursor: pointer;
+}
+
 ::-webkit-scrollbar {
     width: 0;
 }
