@@ -1,27 +1,42 @@
 document.getElementById('add-btn').addEventListener('click', showAddTaskPopUp);
-document.getElementById('update-btn').addEventListener('click', showAddTaskPopUp);
-document.getElementById('delete-btn').addEventListener('click', showDeleteTaskPopUp);
 document.getElementById('add-modal-close').addEventListener('click', hideAddTaskPopUp);
-document.getElementById('delete-modal-close').addEventListener('click', hideDeleteTaskPopUp);
 document.getElementById('add-modal-cancel').addEventListener('click', hideAddTaskPopUp);
+
+document.getElementById('update-btn').addEventListener('click', showUpdateTaskPopUp);
+document.getElementById('update-modal-close').addEventListener('click', hideUpdateTaskPopUp);
+document.getElementById('update-modal-cancel').addEventListener('click', hideUpdateTaskPopUp);
+
+document.getElementById('delete-btn').addEventListener('click', showDeleteTaskPopUp);
+document.getElementById('delete-modal-close').addEventListener('click', hideDeleteTaskPopUp);
 document.getElementById('delete-modal-cancel').addEventListener('click', hideDeleteTaskPopUp);
 
 function showAddTaskPopUp() {
     document.getElementById('add-modal').style.display = "flex";
 }
 
-function showDeleteTaskPopUp() {
-    document.getElementById('delete-modal').style.display = "flex";
+function hideAddTaskPopUp(event) {
+    document.getElementById('add-modal').style.display = "none";
+    if (event.target.classList.contains('close') == true) {
+        document.getElementById('add-task-form').reset();
+    }
 }
 
-function hideAddTaskPopUp() {
-    document.getElementById('add-modal').style.display = "none";
+function showDeleteTaskPopUp() {
+    document.getElementById('delete-modal').style.display = "flex";
 }
 
 function hideDeleteTaskPopUp() {
     document.getElementById('delete-modal').style.display = "none";
 }
 
+function showUpdateTaskPopUp() {
+    document.getElementById('update-modal').style.display = "flex";
+}
+
+function hideUpdateTaskPopUp() {
+    console.log("hide update pop up");
+    document.getElementById('update-modal').style.display = "none";
+}
 
 let selectedTask;
 
@@ -32,11 +47,11 @@ for (let i = 0; i < tasks.length; i++) {
 
 function selectTask() {
     deselectOtherTasks(this);
-    console.log("inside selectTask");
+
     this.style.border = "thick solid rgb(212, 96, 64)";
     showButtons();
+
     selectedTask = this;
-    console.log(selectedTask)
     let desc = selectedTask.querySelector('.task-desc');
     console.log("task desc:", desc.innerHTML);
 }
@@ -60,7 +75,7 @@ function hideButtons() {
 }
 
 window.onclick = function(event) {
-    if (event.target.className.includes('task-') != true && event.target.className.includes('button') != true) {
+    if (event.target.className.includes('task-') != true && event.target.className.includes('modal') != true && event.target.className.includes('button') != true && event.target.className.includes('close') != true) {
         for (let i = 0; i < tasks.length; i++) {
             tasks[i].style.border = 'none';
             hideButtons();
@@ -68,7 +83,8 @@ window.onclick = function(event) {
     }
 
     if (event.target.classList.contains('modal')) {
-        hideAddTaskPopUp();
+        hideAddTaskPopUp(event);
+        hideUpdateTaskPopUp();
         hideDeleteTaskPopUp();
     }
 }
@@ -106,9 +122,37 @@ for (let i = 0; i < starButtons.length; i++) {
 }
 
 function clickStarTask() {
-    if (this.classList.contains('checked')) {
-        this.classList.remove('checked');
+    if (this.classList.contains('important')) {
+        this.classList.remove('important');
     } else {
-        this.classList.add('checked');
+        this.classList.add('important');
+    }
+}
+
+let addToTodayButtons = document.getElementsByClassName("modal-today-icon");
+for (let i = 0; i < addToTodayButtons.length; i++) {
+    addToTodayButtons[i].addEventListener('click', clickAddToToday);
+}
+
+function clickAddToToday() {
+    let icon = this.querySelector('.fa-sun');
+    if (icon.classList.contains('today')) {
+        icon.classList.remove('today');
+    } else {
+        icon.classList.add('today');
+    }
+}
+
+let markImpButtons = document.getElementsByClassName("modal-star-icon");
+for (let i = 0; i < addToTodayButtons.length; i++) {
+    markImpButtons[i].addEventListener('click', clickMarkImp);
+}
+
+function clickMarkImp() {
+    let icon = this.querySelector('.fa-star');
+    if (icon.classList.contains('important')) {
+        icon.classList.remove('important');
+    } else {
+        icon.classList.add('important');
     }
 }

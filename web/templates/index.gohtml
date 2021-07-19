@@ -44,7 +44,7 @@
                             <div class="task-desc">Sample text for task</div>
                             <div class="task-dueDate">Fri, 16 Jul</div>
                         </div>
-                        <a class="fa fa-star icon important-star checked"></a>
+                        <a class="fa fa-star icon important-star important"></a>
                     </div>
                 </div>
 
@@ -57,14 +57,17 @@
             </div>
 
             <div class="flexbox modal" id="add-modal">
-                <div class="flexbox modal-content">
+                <form class="flexbox modal-content" id="add-task-form">
                     <a class="fa fa-times icon close" id="add-modal-close"></a>
+                    
                     <div class="flexbox label modal-label">Task</div>
                     <input class="modal-input" type="text">
+                    
                     <div class="flexbox label modal-label">Due Date</div>
                     <input class="modal-input" type="date">
+                    
                     <div class="flexbox modal-icons">
-                        <div class="flexbox today-icon">
+                        <div class="flexbox modal-today-icon">
                             <a class="fa fa-sun icon modal-icon"></a>
                             Add to Today
                         </div>
@@ -74,11 +77,41 @@
                             Mark as Important
                         </div>
                     </div>
+                    
                     <div class="modal-buttons">
-                        <button class="button modal-cancel" id="add-modal-cancel">Cancel</button>
+                        <input type="reset" class="button modal-cancel" id="add-modal-cancel" value="Cancel"></input>
                         <input type="submit" class="button" value="Submit">
                     </div>
-                </div>
+                </form>
+            </div>
+
+            <div class="flexbox modal" id="update-modal">
+                <form class="flexbox modal-content" id="update-task-form">
+                    <a class="fa fa-times icon close" id="update-modal-close"></a>
+                    
+                    <div class="flexbox label modal-label">Task</div>
+                    <input class="modal-input" type="text">
+                    
+                    <div class="flexbox label modal-label">Due Date</div>
+                    <input class="modal-input" type="date">
+                    
+                    <div class="flexbox modal-icons">
+                        <div class="flexbox modal-today-icon">
+                            <a class="fa fa-sun icon modal-icon"></a>
+                            Add to Today
+                        </div>
+
+                        <div class="flexbox modal-star-icon">
+                            <a class="fa fa-star icon modal-icon"></a>
+                            Mark as Important
+                        </div>
+                    </div>
+                    
+                    <div class="modal-buttons">
+                        <button type="button" class="button modal-cancel" id="update-modal-cancel">Cancel</button>
+                        <input type="submit" class="button" value="Submit">
+                    </div>
+                </form>
             </div>
 
             <div class="flexbox modal" id="delete-modal">
