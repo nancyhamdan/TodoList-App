@@ -22,37 +22,43 @@
             </ul>
         </div>
         <div class="flexbox" id="main-content">
+            
             <div class="flexbox" id="tasks-container">
-                <div class="task-container flexbox">
-                    <a class="fa fa-circle icon"></a>
-                    <div class="task-text">
-                        <div class="task-desc">Sample text for task</div>
-                        <div class="task-dueDate">Mon, 19 Jul</div>
+                <div class="uncompleted-tasks flexbox">
+                    <div class="task-container flexbox">
+                        <a class="fa fa-circle icon complete-circle"></a>
+                        <div class="task-text">
+                            <div class="task-desc">Sample text for task</div>
+                            <div class="task-dueDate">Mon, 19 Jul</div>
+                        </div>
+                        <a class="fa fa-star icon important-star"></a>
                     </div>
-                    <a class="fa fa-star icon"></a>
                 </div>
 
-                <div class="flexbox label" id="completed-div">Completed</div>
+                <div class="completed-tasks flexbox">
+                    <div class="flexbox label" id="completed-div">Completed</div>
 
-                <div class="task-container flexbox">
-                    <a class="fa fa-check-circle icon checked"></a>
-                    <div class="task-text">
-                        <div class="task-desc">Sample text for task</div>
-                        <div class="task-dueDate">Fri, 16 Jul</div>
+                    <div class="task-container flexbox">
+                        <a class="fa fa-check-circle icon complete-circle checked"></a>
+                        <div class="task-text">
+                            <div class="task-desc">Sample text for task</div>
+                            <div class="task-dueDate">Fri, 16 Jul</div>
+                        </div>
+                        <a class="fa fa-star icon important-star checked"></a>
                     </div>
-                    <a class="fa fa-star icon checked"></a>
                 </div>
+
             </div>
 
             <div id="buttons-container">
                 <button class="button" id="update-btn">Update Task</button>
                 <button class="button" id="delete-btn">Delete Task</button>
-                <button class="button" id="add-btn" onclick="showAddTaskPopUp()">Add Task</button>
+                <button class="button" id="add-btn">Add Task</button>
             </div>
 
-            <div class="flexbox modal">
+            <div class="flexbox modal" id="add-modal">
                 <div class="flexbox modal-content">
-                    <a class="fa fa-times icon close" onclick="hideAddTaskPopUp()"></a>
+                    <a class="fa fa-times icon close" id="add-modal-close"></a>
                     <div class="flexbox label modal-label">Task</div>
                     <input class="modal-input" type="text">
                     <div class="flexbox label modal-label">Due Date</div>
@@ -69,8 +75,19 @@
                         </div>
                     </div>
                     <div class="modal-buttons">
-                        <button class="button modal-cancel" onclick="hideAddTaskPopUp()">Cancel</button>
+                        <button class="button modal-cancel" id="add-modal-cancel">Cancel</button>
                         <input type="submit" class="button" value="Submit">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flexbox modal" id="delete-modal">
+                <div class="flexbox modal-content" id="delete-modal-content">
+                    <a class="fa fa-times icon close" id="delete-modal-close"></a>
+                    <p>Are you sure you want to delete Task? this action cannot be undone.</p>
+                    <div class="modal-buttons">
+                            <button class="button modal-cancel" id="delete-modal-cancel">Cancel</button>
+                            <input type="submit" class="button" value="Delete Task">
                     </div>
                 </div>
             </div>

@@ -86,11 +86,20 @@ body {
     padding: 2vh;
 }
 
+.completed-tasks,
+.uncompleted-tasks {
+    flex-direction: column;
+    width: 100%;
+}
+
+.completed-tasks .label {
+    height: 6vh;
+}
+
 .task-container {
     width: 92%;
-    height: 15%;
+    height: 8.5vh;
     background-color: #D7755B;
-    /* background-color: #277DA1; */
     margin-top: 0.5vh;
     margin-bottom: 1vh;
     border-radius: 0.5vw;
@@ -202,6 +211,18 @@ body {
     background-color: #81B29A;
     border-radius: 1.5vw;
     animation: bringPopUpDown 0.5s ease;
+}
+
+#delete-modal-content {
+    height: 40%;
+}
+
+#delete-modal-content p {
+    width: 92%;
+    margin: 4vh;
+    color: #F4F1DE;
+    font-size: 1.4vw;
+    text-align: center;
 }
 
 @keyframes bringPopUpDown {
