@@ -1,14 +1,7 @@
+// Tasks container functionalities
 document.getElementById('add-btn').addEventListener('click', showAddTaskPopUp);
 document.getElementById('add-modal-close').addEventListener('click', hideAddTaskPopUp);
 document.getElementById('add-modal-cancel').addEventListener('click', hideAddTaskPopUp);
-
-document.getElementById('update-btn').addEventListener('click', showUpdateTaskPopUp);
-document.getElementById('update-modal-close').addEventListener('click', hideUpdateTaskPopUp);
-document.getElementById('update-modal-cancel').addEventListener('click', hideUpdateTaskPopUp);
-
-document.getElementById('delete-btn').addEventListener('click', showDeleteTaskPopUp);
-document.getElementById('delete-modal-close').addEventListener('click', hideDeleteTaskPopUp);
-document.getElementById('delete-modal-cancel').addEventListener('click', hideDeleteTaskPopUp);
 
 function showAddTaskPopUp() {
     document.getElementById('add-modal').style.display = "flex";
@@ -21,23 +14,7 @@ function hideAddTaskPopUp(event) {
     }
 }
 
-function showDeleteTaskPopUp() {
-    document.getElementById('delete-modal').style.display = "flex";
-}
-
-function hideDeleteTaskPopUp() {
-    document.getElementById('delete-modal').style.display = "none";
-}
-
-function showUpdateTaskPopUp() {
-    document.getElementById('update-modal').style.display = "flex";
-}
-
-function hideUpdateTaskPopUp() {
-    console.log("hide update pop up");
-    document.getElementById('update-modal').style.display = "none";
-}
-
+// Task functionalities
 let selectedTask;
 
 let tasks = document.getElementsByClassName("task-container");
@@ -52,8 +29,6 @@ function selectTask() {
     showButtons();
 
     selectedTask = this;
-    let desc = selectedTask.querySelector('.task-desc');
-    console.log("task desc:", desc.innerHTML);
 }
 
 function deselectOtherTasks(task) {
@@ -89,12 +64,34 @@ window.onclick = function(event) {
     }
 }
 
-let completeButtons = document.getElementsByClassName("complete-circle");
-for (let i = 0; i < completeButtons.length; i++) {
-    completeButtons[i].addEventListener("click", clickCompleteTask);
+document.getElementById('update-btn').addEventListener('click', showUpdateTaskPopUp);
+document.getElementById('update-modal-close').addEventListener('click', hideUpdateTaskPopUp);
+document.getElementById('update-modal-cancel').addEventListener('click', hideUpdateTaskPopUp);
+
+function showUpdateTaskPopUp() {
+    document.getElementById('update-modal').style.display = "flex";
 }
 
-function clickCompleteTask() {
+function hideUpdateTaskPopUp() {
+    console.log("hide update pop up");
+    document.getElementById('update-modal').style.display = "none";
+}
+
+// do reset form function for the update task pop up
+
+document.getElementById('delete-btn').addEventListener('click', showDeleteTaskPopUp);
+document.getElementById('delete-modal-close').addEventListener('click', hideDeleteTaskPopUp);
+document.getElementById('delete-modal-cancel').addEventListener('click', hideDeleteTaskPopUp);
+
+function showDeleteTaskPopUp() {
+    document.getElementById('delete-modal').style.display = "flex";
+}
+
+function hideDeleteTaskPopUp() {
+    document.getElementById('delete-modal').style.display = "none";
+}
+
+function toggleTaskComplete() {
     let uncompletedTasks = document.getElementsByClassName("uncompleted-tasks")[0];
     let completedTasks = document.getElementsByClassName("completed-tasks")[0];
     if (this.classList.contains('checked')) {
@@ -116,25 +113,22 @@ function clickCompleteTask() {
     }
 }
 
-let starButtons = document.getElementsByClassName("important-star");
-for (let i = 0; i < starButtons.length; i++) {
-    starButtons[i].addEventListener("click", clickStarTask);
-}
-
-function clickStarTask() {
-    if (this.classList.contains('important')) {
-        this.classList.remove('important');
+function toggleTaskImportant(icon) {
+    // originally was this.classList
+    if (icon.classList.contains('important')) {
+        icon.classList.remove('important');
     } else {
-        this.classList.add('important');
+        icon.classList.add('important');
     }
 }
 
+// for buttons in the modals
 let addToTodayButtons = document.getElementsByClassName("modal-today-icon");
 for (let i = 0; i < addToTodayButtons.length; i++) {
-    addToTodayButtons[i].addEventListener('click', clickAddToToday);
+    addToTodayButtons[i].addEventListener('click', toggleAddToToday);
 }
 
-function clickAddToToday() {
+function toggleAddToToday() {
     let icon = this.querySelector('.fa-sun');
     if (icon.classList.contains('today')) {
         icon.classList.remove('today');
@@ -145,10 +139,10 @@ function clickAddToToday() {
 
 let markImpButtons = document.getElementsByClassName("modal-star-icon");
 for (let i = 0; i < addToTodayButtons.length; i++) {
-    markImpButtons[i].addEventListener('click', clickMarkImp);
+    markImpButtons[i].addEventListener('click', toggleModalTaskImportant);
 }
 
-function clickMarkImp() {
+function toggleModalTaskImportant() {
     let icon = this.querySelector('.fa-star');
     if (icon.classList.contains('important')) {
         icon.classList.remove('important');
