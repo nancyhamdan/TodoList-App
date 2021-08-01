@@ -1,3 +1,5 @@
+// do event delegation instead of manual event handling
+
 // Tasks container functionalities
 document.getElementById('add-btn').addEventListener('click', showAddTaskPopUp);
 document.getElementById('add-modal-close').addEventListener('click', hideAddTaskPopUp);
@@ -10,8 +12,26 @@ function showAddTaskPopUp() {
 function hideAddTaskPopUp(event) {
     document.getElementById('add-modal').style.display = "none";
     if (event.target.classList.contains('close') == true) {
-        document.getElementById('add-task-form').reset();
+        resetForm(document.getElementById('add-task-form'));
     }
+}
+
+function getModalFields(modal) {
+    return {
+        taskDesc: modal.querySelector('.modal-input[type="text"]'),
+        dueDate: modal.querySelector('.modal-input[type="date"]'),
+        isToday: modal.querySelector('.fa-sun'),
+        isImp: modal.querySelector('.fa-star')
+    }
+}
+
+function resetForm(form) {
+    let fields = getModalFields(form);
+
+    fields.taskDesc.value = '';
+    fields.dueDate.value = '';
+    toggleIsToday(fields.isToday);
+    toggleIsImportant(fields.isImp);
 }
 
 // Task functionalities
@@ -77,8 +97,6 @@ function hideUpdateTaskPopUp() {
     document.getElementById('update-modal').style.display = "none";
 }
 
-// do reset form function for the update task pop up
-
 document.getElementById('delete-btn').addEventListener('click', showDeleteTaskPopUp);
 document.getElementById('delete-modal-close').addEventListener('click', hideDeleteTaskPopUp);
 document.getElementById('delete-modal-cancel').addEventListener('click', hideDeleteTaskPopUp);
@@ -113,40 +131,39 @@ function toggleTaskComplete() {
     }
 }
 
-function toggleTaskImportant(icon) {
-    // originally was this.classList
-    if (icon.classList.contains('important')) {
-        icon.classList.remove('important');
-    } else {
-        icon.classList.add('important');
-    }
+function toggleIsToday(icon) {
+    icon.classList.contains('today') == true ? icon.classList.remove('today') : icon.classList.add('today');
+}
+
+function toggleIsImportant(icon) {
+    icon.classList.contains('important') == true ? icon.classList.remove('important') : icon.classList.add('important');
 }
 
 // for buttons in the modals
 let addToTodayButtons = document.getElementsByClassName("modal-today-icon");
 for (let i = 0; i < addToTodayButtons.length; i++) {
-    addToTodayButtons[i].addEventListener('click', toggleAddToToday);
-}
-
-function toggleAddToToday() {
-    let icon = this.querySelector('.fa-sun');
-    if (icon.classList.contains('today')) {
-        icon.classList.remove('today');
-    } else {
-        icon.classList.add('today');
-    }
+    addToTodayButtons[i].addEventListener('click', function() {
+        toggleIsToday(this.querySelector('.fa-sun'));
+    });
 }
 
 let markImpButtons = document.getElementsByClassName("modal-star-icon");
 for (let i = 0; i < addToTodayButtons.length; i++) {
-    markImpButtons[i].addEventListener('click', toggleModalTaskImportant);
+    markImpButtons[i].addEventListener('click', function() {
+        toggleIsImportant(this.querySelector('.fa-star'));
+    });
 }
 
-function toggleModalTaskImportant() {
-    let icon = this.querySelector('.fa-star');
-    if (icon.classList.contains('important')) {
-        icon.classList.remove('important');
-    } else {
-        icon.classList.add('important');
-    }
+function showAddTask(task) {
+    let html = '<div class="task-container flexbox">';
+    html += '<a class="fa fa-circle icon complete-circle"></a>';
+    html += '<div class="task-text">';
+    html += '<div class="task-desc">' + task.taskDesc + '</div>';
+    html += '<div class="task-dueDate">' + task.dueDate + '</div>';
+    html += '</div>';
+    html += '<a class="fa fa-star icon important-star"></a>';
+    html += '</div>';
+
+    console.log(document.getElementsByClassName('uncompleted-tasks')[0]);
+    document.getElementsByClassName('uncompleted-tasks')[0].innerHTML += html;
 }

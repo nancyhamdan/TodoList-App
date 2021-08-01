@@ -2,7 +2,7 @@ function httpPOST(url, callback) {
 
 }
 
-const sessionID;
+// const sessionID;
 
 // login
 
@@ -12,7 +12,17 @@ const sessionID;
 document.getElementById('submit-add').addEventListener('click', addTask);
 
 function addTask() {
+    let addForm = document.getElementById('add-modal');
+    let fields = getModalFields(addForm);
+    let task = {};
 
+    task.taskDesc = fields.taskDesc.value;
+    task.dueDate = fields.dueDate.value;
+    fields.isToday.classList.contains('today') == true ? task.isToday = true : task.isToday = false;
+    fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
+    console.log(task);
+    showAddTask(task);
+    resetForm(addForm);
 }
 
 // update task (over all update)
