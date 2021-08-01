@@ -22,7 +22,7 @@ function updateTask() {
 
 }
 
-// update task (completetion)
+// update task (completion)
 let completeButtons = document.getElementsByClassName("complete-circle");
 for (let i = 0; i < completeButtons.length; i++) {
     completeButtons[i].addEventListener("click", updateTaskCompletion);

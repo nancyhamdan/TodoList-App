@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.0/css/fontawesome.min.css">
     <link rel="stylesheet" href="../static/styles/main.css">
-    <meta id="page-name" data-page="today-page">
+    <meta id="page-name" data-page="today">
 </head>
 
 <body>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="flexbox modal" id="add-modal">
-                <form class="flexbox modal-content" id="add-task-form" onsubmit="return addTask()" action="/add" method="POST">
+                <div class="flexbox modal-content" id="add-task-form">
                     <a class="fa fa-times icon close" id="add-modal-close"></a>
                     
                     <div class="flexbox label modal-label">Task</div>
@@ -81,14 +81,14 @@
                     </div>
                     
                     <div class="modal-buttons">
-                        <input type="reset" class="button modal-cancel" id="add-modal-cancel" value="Cancel"></input>
-                        <input type="submit" class="button" id="submit-add" value="Submit">
+                        <button class="button modal-cancel" id="add-modal-cancel">Cancel</button>
+                        <button class="button" id="submit-add">Submit</button>
                     </div>
-                </form>
+                </div>
             </div>
 
-            <div class="flexbox modal" id="update-modal" onsubmit="return updateTask()" action="/update" method="POST">
-                <form class="flexbox modal-content" id="update-task-form">
+            <div class="flexbox modal" id="update-modal">
+                <div class="flexbox modal-content" id="update-task-form">
                     <a class="fa fa-times icon close" id="update-modal-close"></a>
                     
                     <div class="flexbox label modal-label">Task</div>
@@ -111,9 +111,9 @@
                     
                     <div class="modal-buttons">
                         <button type="button" class="button modal-cancel" id="update-modal-cancel">Cancel</button>
-                        <input type="submit" class="button" id="submit-update" value="Submit">
+                        <button class="button" id="submit-update">Submit</button>
                     </div>
-                </form>
+                </div>
             </div>
 
             <div class="flexbox modal" id="delete-modal">
@@ -122,7 +122,7 @@
                     <p>Are you sure you want to delete Task? this action cannot be undone.</p>
                     <div class="modal-buttons">
                             <button class="button modal-cancel" id="delete-modal-cancel">Cancel</button>
-                            <input type="submit" class="button" id="submit-delete" value="Delete Task">
+                            <button class="button" id="submit-delete">Delete Task</button>
                     </div>
                 </div>
             </div>
