@@ -21,8 +21,9 @@ function addTask() {
     fields.isToday.classList.contains('today') == true ? task.isToday = true : task.isToday = false;
     fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
     console.log(task);
-    showAddTask(task);
+    createTask(task);
     resetForm(addForm);
+    hideAddTaskPopUp();
 }
 
 // update task (over all update)

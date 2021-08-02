@@ -1,18 +1,27 @@
 // do event delegation instead of manual event handling
+document.getElementById("tasks-container").onclick = function(event) {
+    let target = event.target;
 
-// Tasks container functionalities
-document.getElementById('add-btn').addEventListener('click', showAddTaskPopUp);
-document.getElementById('add-modal-close').addEventListener('click', hideAddTaskPopUp);
-document.getElementById('add-modal-cancel').addEventListener('click', hideAddTaskPopUp);
-
-function showAddTaskPopUp() {
-    document.getElementById('add-modal').style.display = "flex";
+    if (target.closest('.task-container')) {
+        selectTask(target.closest('.task-container'));
+    }
 }
 
-function hideAddTaskPopUp(event) {
-    document.getElementById('add-modal').style.display = "none";
-    if (event.target.classList.contains('close') == true) {
-        resetForm(document.getElementById('add-task-form'));
+window.onclick = function(event) {
+    let target = event.target;
+
+    if (target.className.includes('task-') != true && event.target.className.includes('modal') != true && event.target.className.includes('button') != true && event.target.className.includes('close') != true) {
+        let tasks = document.getElementsByClassName("task-container");
+        for (let i = 0; i < tasks.length; i++) {
+            tasks[i].style.border = 'none';
+            hideButtons();
+        }
+    }
+
+    if (target.classList.contains('modal')) {
+        hideAddTaskPopUp(event);
+        hideUpdateTaskPopUp();
+        hideDeleteTaskPopUp();
     }
 }
 
@@ -30,33 +39,44 @@ function resetForm(form) {
 
     fields.taskDesc.value = '';
     fields.dueDate.value = '';
-    toggleIsToday(fields.isToday);
-    toggleIsImportant(fields.isImp);
+    if (fields.isToday.classList.contains('today')) {
+        fields.isToday.classList.remove('today');
+    }
+    if (fields.isImp.classList.contains('important')) {
+        fields.isImp.classList.remove('important');
+    }
 }
 
-// Task functionalities
 let selectedTask;
 
-let tasks = document.getElementsByClassName("task-container");
-for (let i = 0; i < tasks.length; i++) {
-    tasks[i].addEventListener("click", selectTask);
-}
-
-function selectTask() {
-    deselectOtherTasks(this);
-
-    this.style.border = "thick solid rgb(212, 96, 64)";
+function selectTask(task) {
+    selectedTask = task;
+    deselectOtherTasks(task);
+    task.style.border = "thick solid rgb(212, 96, 64)";
     showButtons();
-
-    selectedTask = this;
 }
 
 function deselectOtherTasks(task) {
+    let tasks = document.getElementsByClassName("task-container");
     for (let i = 0; i < tasks.length; i++) {
         if (tasks[i] != task) {
             tasks[i].style.border = 'none';
         }
     }
+}
+
+// Tasks container functionalities
+document.getElementById('add-btn').addEventListener('click', showAddTaskPopUp);
+document.getElementById('add-modal-close').addEventListener('click', hideAddTaskPopUp);
+document.getElementById('add-modal-cancel').addEventListener('click', hideAddTaskPopUp);
+
+function showAddTaskPopUp() {
+    document.getElementById('add-modal').style.display = "flex";
+}
+
+function hideAddTaskPopUp() {
+    document.getElementById('add-modal').style.display = "none";
+    resetForm(document.getElementById('add-task-form'));
 }
 
 function showButtons() {
@@ -67,21 +87,6 @@ function showButtons() {
 function hideButtons() {
     document.getElementById("update-btn").style.display = "none";
     document.getElementById("delete-btn").style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target.className.includes('task-') != true && event.target.className.includes('modal') != true && event.target.className.includes('button') != true && event.target.className.includes('close') != true) {
-        for (let i = 0; i < tasks.length; i++) {
-            tasks[i].style.border = 'none';
-            hideButtons();
-        }
-    }
-
-    if (event.target.classList.contains('modal')) {
-        hideAddTaskPopUp(event);
-        hideUpdateTaskPopUp();
-        hideDeleteTaskPopUp();
-    }
 }
 
 document.getElementById('update-btn').addEventListener('click', showUpdateTaskPopUp);
@@ -139,29 +144,38 @@ function toggleIsImportant(icon) {
     icon.classList.contains('important') == true ? icon.classList.remove('important') : icon.classList.add('important');
 }
 
-// for buttons in the modals
-let addToTodayButtons = document.getElementsByClassName("modal-today-icon");
-for (let i = 0; i < addToTodayButtons.length; i++) {
-    addToTodayButtons[i].addEventListener('click', function() {
+let isTodayModalButtons = document.getElementsByClassName("modal-today-icon");
+for (let i = 0; i < isTodayModalButtons.length; i++) {
+    isTodayModalButtons[i].addEventListener('click', function() {
         toggleIsToday(this.querySelector('.fa-sun'));
     });
 }
 
-let markImpButtons = document.getElementsByClassName("modal-star-icon");
-for (let i = 0; i < addToTodayButtons.length; i++) {
-    markImpButtons[i].addEventListener('click', function() {
+let isImpModalButtons = document.getElementsByClassName("modal-star-icon");
+for (let i = 0; i < isImpModalButtons.length; i++) {
+    isImpModalButtons[i].addEventListener('click', function() {
         toggleIsImportant(this.querySelector('.fa-star'));
     });
 }
 
-function showAddTask(task) {
+function getDate(dueDate) {
+    let date = new Date(dueDate);
+
+    let dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date);
+    let day = date.getDate();
+    let month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+
+    return dayName.slice(0, 3) + ", " + (day <= 9 ? '0' + day : day) + " " + month.slice(0, 3);
+}
+
+function createTask(task) {
     let html = '<div class="task-container flexbox">';
     html += '<a class="fa fa-circle icon complete-circle"></a>';
     html += '<div class="task-text">';
     html += '<div class="task-desc">' + task.taskDesc + '</div>';
-    html += '<div class="task-dueDate">' + task.dueDate + '</div>';
+    html += '<div class="task-dueDate">' + getDate(task.dueDate) + '</div>';
     html += '</div>';
-    html += '<a class="fa fa-star icon important-star"></a>';
+    html += '<a class="fa fa-star icon important-star' + (task.isImp == true ? ' important">' : '">') + '</a>';
     html += '</div>';
 
     console.log(document.getElementsByClassName('uncompleted-tasks')[0]);
