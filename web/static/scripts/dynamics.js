@@ -94,7 +94,20 @@ document.getElementById('update-modal-close').addEventListener('click', hideUpda
 document.getElementById('update-modal-cancel').addEventListener('click', hideUpdateTaskPopUp);
 
 function showUpdateTaskPopUp() {
-    document.getElementById('update-modal').style.display = "flex";
+    let updateForm = document.getElementById('update-modal');
+    let taskDesc = updateForm.querySelector('.modal-input[type="text"]');
+    let dueDate = updateForm.querySelector('.modal-input[type="date"]');
+    console.log(dueDate);
+    let isToday = updateForm.querySelector('.fa-sun');
+    let isImp = updateForm.querySelector('.fa-star');
+
+    taskDesc.value = selectedTask.querySelector('.task-desc').innerHTML;
+    console.log(selectedTask.querySelector('.task-dueDate').innerHTML);
+    dueDate.value = getDate(selectedTask.querySelector('.task-dueDate').innerHTML);
+    selectedTask.dataset.isToday == 'true' ? isToday.classList.add('today') : isToday.classList.remove('today');
+    selectedTask.querySelector('.important-star').classList.contains('important') == true ? isImp.classList.add('important') : isImp.classList.remove('important');
+
+    updateForm.style.display = "flex";
 }
 
 function hideUpdateTaskPopUp() {
@@ -158,26 +171,23 @@ for (let i = 0; i < isImpModalButtons.length; i++) {
     });
 }
 
-function getDate(dueDate) {
-    let date = new Date(dueDate);
-
-    let dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date);
-    let day = date.getDate();
-    let month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
-
-    return dayName.slice(0, 3) + ", " + (day <= 9 ? '0' + day : day) + " " + month.slice(0, 3);
-}
-
-function createTask(task) {
-    let html = '<div class="task-container flexbox">';
+function addTask(task) {
+    let html = '<div class="task-container flexbox"' + (task.isToday == true ? ' data-is-Today="true">' : ' data-is-Today="false">');
     html += '<a class="fa fa-circle icon complete-circle"></a>';
     html += '<div class="task-text">';
     html += '<div class="task-desc">' + task.taskDesc + '</div>';
-    html += '<div class="task-dueDate">' + getDate(task.dueDate) + '</div>';
+    html += '<div class="task-dueDate">' + getDisplayDate(task.dueDate) + '</div>';
     html += '</div>';
     html += '<a class="fa fa-star icon important-star' + (task.isImp == true ? ' important">' : '">') + '</a>';
     html += '</div>';
 
     console.log(document.getElementsByClassName('uncompleted-tasks')[0]);
     document.getElementsByClassName('uncompleted-tasks')[0].innerHTML += html;
+}
+
+function updateTask(task) {
+    selectedTask.querySelector('.task-desc').innerHTML = task.taskDesc;
+    selectedTask.querySelector('.task-dueDate').innerHTML = getDisplayDate(task.dueDate);
+    let isImp = selectedTask.querySelector('.important-star');
+    task.isImp == true ? isImp.classList.add('important') : isImp.classList.remove('important');
 }

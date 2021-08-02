@@ -8,54 +8,63 @@ function httpPOST(url, callback) {
 
 // make use of the page-name meta elemnt to know what kind of task it is
 
-// add task
-document.getElementById('submit-add').addEventListener('click', addTask);
-
-function addTask() {
-    let addForm = document.getElementById('add-modal');
-    let fields = getModalFields(addForm);
+function createTaskInfo(fields) {
     let task = {};
-
     task.taskDesc = fields.taskDesc.value;
     task.dueDate = fields.dueDate.value;
     fields.isToday.classList.contains('today') == true ? task.isToday = true : task.isToday = false;
     fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
-    console.log(task);
-    createTask(task);
+    return task;
+}
+
+// add task
+document.getElementById('submit-add').addEventListener('click', sendAddTask);
+
+function sendAddTask() {
+    let addForm = document.getElementById('add-modal');
+    let fields = getModalFields(addForm);
+    let task = createTaskInfo(fields);
+
+    addTask(task);
     resetForm(addForm);
     hideAddTaskPopUp();
 }
 
 // update task (over all update)
-document.getElementById('submit-update').addEventListener('click', updateTask);
+document.getElementById('submit-update').addEventListener('click', sendUpdateTask);
 
-function updateTask() {
+function sendUpdateTask() {
+    let updateForm = document.getElementById('update-modal');
+    let fields = getModalFields(updateForm);
+    let task = createTaskInfo(fields);
 
+    updateTask(task);
+    hideUpdateTaskPopUp();
 }
 
 // update task (completion)
 let completeButtons = document.getElementsByClassName("complete-circle");
 for (let i = 0; i < completeButtons.length; i++) {
-    completeButtons[i].addEventListener("click", updateTaskCompletion);
+    completeButtons[i].addEventListener("click", sendUpdateTaskCompletion);
 }
 
-function updateTaskCompletion() {
+function sendUpdateTaskCompletion() {
     toggleTaskComplete(icon);
 }
 
 // update task (importance)
 let starButtons = document.getElementsByClassName("important-star");
 for (let i = 0; i < starButtons.length; i++) {
-    starButtons[i].addEventListener("click", updateTaskImportance);
+    starButtons[i].addEventListener("click", sendUpdateTaskImportance);
 }
 
-function updateTaskImportance() {
+function sendUpdateTaskImportance() {
     toggleTaskImportant(icon);
 }
 
 // delete task
-document.getElementById('submit-delete').addEventListener('click', deleteTask);
+document.getElementById('submit-delete').addEventListener('click', sendDeleteTask);
 
-function deleteTask() {
+function sendDeleteTask() {
 
 }
