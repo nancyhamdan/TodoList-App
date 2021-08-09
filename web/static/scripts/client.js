@@ -24,7 +24,7 @@ function sendAddTask() {
     let addForm = document.getElementById('add-modal');
     let fields = getModalFields(addForm);
     let task = createTaskInfo(fields);
-
+    // get task id from server then add the task using addTask, task object should have an id
     addTask(task);
     resetForm(addForm);
     hideAddTaskPopUp();
@@ -35,6 +35,7 @@ document.getElementById('submit-update').addEventListener('click', sendUpdateTas
 
 function sendUpdateTask() {
     let updateForm = document.getElementById('update-modal');
+    // fix it so obj also has isCompleted
     let fields = getModalFields(updateForm);
     let task = createTaskInfo(fields);
 
