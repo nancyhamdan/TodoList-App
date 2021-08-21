@@ -13,20 +13,20 @@ function createTaskInfo(fields) {
 
 // add task
 function sendAddTask() {
-    let addForm = document.getElementById('add-modal');
-    let fields = getModalFields(addForm);
+    let addModal = document.getElementById('add-modal');
+    let fields = getModalFields(addModal);
     let task = createTaskInfo(fields);
     // get task id from server then add the task using addTask, task object should have an id
     addTask(task);
-    resetForm(addForm);
+    resetFields(addModal);
     hideAddTaskPopUp();
 }
 
 // update task (over all update)
 function sendUpdateTask() {
-    let updateForm = document.getElementById('update-modal');
+    let updateModal = document.getElementById('update-modal');
     // fix it so obj also has isCompleted
-    let fields = getModalFields(updateForm);
+    let fields = getModalFields(updateModal);
     let task = createTaskInfo(fields);
 
     updateTask(task);

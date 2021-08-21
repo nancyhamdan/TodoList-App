@@ -47,3 +47,12 @@ function getDate(displayDate) {
     console.log(typeof date, date);
     return date;
 }
+
+function getModalFields(modal) {
+    return {
+        taskDesc: modal.querySelector('.modal-input[type="text"]'),
+        dueDate: modal.querySelector('.modal-input[type="date"]'),
+        isToday: modal.querySelector('.fa-sun'),
+        isImp: modal.querySelector('.fa-star')
+    }
+}
