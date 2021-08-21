@@ -56,3 +56,12 @@ function getModalFields(modal) {
         isImp: modal.querySelector('.fa-star')
     }
 }
+
+function createTaskInfo(fields) {
+    let task = {};
+    task.taskDesc = fields.taskDesc.value;
+    task.dueDate = fields.dueDate.value;
+    fields.isToday.classList.contains('today') == true ? task.isToday = true : task.isToday = false;
+    fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
+    return task;
+}

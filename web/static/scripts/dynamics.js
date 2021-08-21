@@ -97,27 +97,27 @@ function hideDeleteTaskPopUp() {
 }
 
 // toggleTaskComplete marks a task as comepleted or uncompleted depending on the task's state (checked or not) 
-function toggleTaskComplete() {
-    let task = this.parentNode;
+function toggleTaskComplete(completeButton) {
+    let task = completeButton.parentNode;
     let uncompletedTasks = document.getElementsByClassName("uncompleted-tasks")[0];
     let completedTasks = document.getElementsByClassName("completed-tasks")[0];
 
-    if (this.classList.contains('checked')) {
+    if (completeButton.classList.contains('checked')) {
         completedTasks.removeChild(task);
         if (completedTasks.children.length == 1) {
             document.getElementById('completed-div').style.display = 'none';
         }
         uncompletedTasks.appendChild(task);
 
-        this.classList.replace('fa-check-circle', 'fa-circle');
-        this.classList.remove("checked");
+        completeButton.classList.replace('fa-check-circle', 'fa-circle');
+        completeButton.classList.remove("checked");
     } else {
         document.getElementById('completed-div').style.display = 'flex';
         uncompletedTasks.removeChild(task);
         completedTasks.appendChild(task);
 
-        this.classList.replace('fa-circle', 'fa-check-circle');
-        this.classList.add("checked");
+        completeButton.classList.replace('fa-circle', 'fa-check-circle');
+        completeButton.classList.add("checked");
     }
 }
 

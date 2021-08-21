@@ -2,15 +2,6 @@ function httpPOST(url, callback) {
 
 }
 
-function createTaskInfo(fields) {
-    let task = {};
-    task.taskDesc = fields.taskDesc.value;
-    task.dueDate = fields.dueDate.value;
-    fields.isToday.classList.contains('today') == true ? task.isToday = true : task.isToday = false;
-    fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
-    return task;
-}
-
 // add task
 function sendAddTask() {
     let addModal = document.getElementById('add-modal');
@@ -25,7 +16,6 @@ function sendAddTask() {
 // update task (over all update)
 function sendUpdateTask() {
     let updateModal = document.getElementById('update-modal');
-    // fix it so obj also has isCompleted
     let fields = getModalFields(updateModal);
     let task = createTaskInfo(fields);
 
@@ -34,13 +24,13 @@ function sendUpdateTask() {
 }
 
 // update task (completion only)
-function sendUpdateTaskCompletion() {
-    toggleTaskComplete(icon);
+function sendUpdateTaskCompletion(completeButton) {
+    toggleTaskComplete(completeButton);
 }
 
 // update task (importance only)
-function sendUpdateTaskImportance() {
-    toggleTaskImportant(icon);
+function sendUpdateTaskImportance(isImportantButton) {
+    toggleIsImportant(isImportantButton);
 }
 
 // delete task

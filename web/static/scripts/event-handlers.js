@@ -22,14 +22,22 @@ window.onclick = function(event) {
         selectTask(target.closest('.task-container'));
     }
 
-    // Toggle select when clicking on an isToday button in a modal
-    if (target.classList.contains('modal-today-icon')) {
-        toggleIsToday(target.querySelector('.fa-sun'));
+    // Toggle highlighting "Add to today" button in a modal on click
+    if (target.classList.contains('modal-icon') && target.classList.contains('fa-sun')) {
+        toggleIsToday(target);
     }
 
-    // Toggle select when clicking on an isImp button in a modal
-    if (target.classList.contains('modal-star-icon')) {
-        toggleIsImportant(target.querySelector('.fa-star'));
+    // Toggle highlighting "Mark as Important" button in a modal on click
+    if (target.classList.contains('modal-icon') && target.classList.contains('fa-star')) {
+        toggleIsImportant(target);
+    }
+
+    if (target.classList.contains('complete-circle')) {
+        sendUpdateTaskCompletion(target);
+    }
+
+    if (target.classList.contains('important-star')) {
+        sendUpdateTaskImportance(target);
     }
 
 }
