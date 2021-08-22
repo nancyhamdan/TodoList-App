@@ -1,9 +1,5 @@
-function httpPOST(url, callback) {
-
-}
-
 // add task
-function sendAddTask() {
+function addTaskController() {
     let addModal = document.getElementById('add-modal');
     let fields = getModalFields(addModal);
     let task = createTaskInfoFromModal(fields);
@@ -18,7 +14,7 @@ function sendAddTask() {
 }
 
 // update task (over all update)
-function sendUpdateTask() {
+function updateTaskController() {
     let updateModal = document.getElementById('update-modal');
     let fields = getModalFields(updateModal);
     let task = createTaskInfoFromModal(fields);
@@ -29,21 +25,21 @@ function sendUpdateTask() {
 }
 
 // update task (completion only)
-function sendUpdateTaskCompletion(completeButton) {
+function updateTaskCompletionController(completeButton) {
     toggleTaskComplete(completeButton);
     let task = createSelectedTaskInfo();
     let taskJSON = convertToJSON(task);
 }
 
 // update task (importance only)
-function sendUpdateTaskImportance(isImportantButton) {
+function updateTaskImportanceController(isImportantButton) {
     toggleIsImportant(isImportantButton);
     let task = createSelectedTaskInfo();
     let taskJSON = convertToJSON(task);
 }
 
 // delete task
-function sendDeleteTask() {
+function deleteTaskController() {
     let task = createSelectedTaskInfo();
     let taskJSON = convertToJSON(task);
 

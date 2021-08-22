@@ -34,12 +34,12 @@ window.onclick = function(event) {
 
     // Handle completing a task
     if (target.classList.contains('complete-circle')) {
-        sendUpdateTaskCompletion(target);
+        updateTaskCompletionController(target);
     }
 
     // Handle marking a task as important
     if (target.classList.contains('important-star')) {
-        sendUpdateTaskImportance(target);
+        updateTaskImportanceController(target);
     }
 
 }
@@ -47,14 +47,14 @@ window.onclick = function(event) {
 document.getElementById('add-btn').addEventListener('click', showAddTaskPopUp);
 document.getElementById('add-modal-close').addEventListener('click', hideAddTaskPopUp);
 document.getElementById('add-modal-cancel').addEventListener('click', hideAddTaskPopUp);
-document.getElementById('submit-add').addEventListener('click', sendAddTask);
+document.getElementById('submit-add').addEventListener('click', addTaskController);
 
 document.getElementById('update-btn').addEventListener('click', showUpdateTaskPopUp);
 document.getElementById('update-modal-close').addEventListener('click', hideUpdateTaskPopUp);
 document.getElementById('update-modal-cancel').addEventListener('click', hideUpdateTaskPopUp);
-document.getElementById('submit-update').addEventListener('click', sendUpdateTask);
+document.getElementById('submit-update').addEventListener('click', updateTaskController);
 
 document.getElementById('delete-btn').addEventListener('click', showDeleteTaskPopUp);
 document.getElementById('delete-modal-close').addEventListener('click', hideDeleteTaskPopUp);
 document.getElementById('delete-modal-cancel').addEventListener('click', hideDeleteTaskPopUp);
-document.getElementById('submit-delete').addEventListener('click', sendDeleteTask);
+document.getElementById('submit-delete').addEventListener('click', deleteTaskController);

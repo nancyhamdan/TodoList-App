@@ -96,3 +96,10 @@ function createSelectedTaskInfo() {
     fields.isCompleted.classList.contains('checked') == true ? task.isCompleted = true : task.isCompleted = false;
     return task;
 }
+
+function httpPOST(url, json) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(json);
+}
