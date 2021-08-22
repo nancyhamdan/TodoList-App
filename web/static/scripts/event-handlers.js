@@ -32,10 +32,12 @@ window.onclick = function(event) {
         toggleIsImportant(target);
     }
 
+    // Handle completing a task
     if (target.classList.contains('complete-circle')) {
         sendUpdateTaskCompletion(target);
     }
 
+    // Handle marking a task as important
     if (target.classList.contains('important-star')) {
         sendUpdateTaskImportance(target);
     }

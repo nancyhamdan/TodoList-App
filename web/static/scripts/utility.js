@@ -48,6 +48,14 @@ function getDate(displayDate) {
     return date;
 }
 
+function convertToJSON(obj) {
+    return JSON.stringify(obj);
+}
+
+function getSelectedTaskID() {
+    return selectedTask.id;
+}
+
 function getModalFields(modal) {
     return {
         taskDesc: modal.querySelector('.modal-input[type="text"]'),
@@ -57,11 +65,34 @@ function getModalFields(modal) {
     }
 }
 
-function createTaskInfo(fields) {
+function createTaskInfoFromModal(fields) {
     let task = {};
+    task.ID = getSelectedTaskID();
     task.taskDesc = fields.taskDesc.value;
     task.dueDate = fields.dueDate.value;
     fields.isToday.classList.contains('today') == true ? task.isToday = true : task.isToday = false;
     fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
+    return task;
+}
+
+function getSelectedTaskFields() {
+    return {
+        taskDesc: selectedTask.querySelector('.task-desc'),
+        dueDate: selectedTask.querySelector('.task-dueDate'),
+        isToday: selectedTask.dataset.isToday,
+        isImp: selectedTask.querySelector('.important-star'),
+        isCompleted: selectedTask.querySelector('.complete-circle')
+    }
+}
+
+function createSelectedTaskInfo() {
+    let fields = getSelectedTaskFields();
+    let task = {};
+    task.ID = getSelectedTaskID();
+    task.taskDesc = fields.taskDesc.value;
+    task.dueDate = getDate(fields.dueDate.value);
+    task.isToday = fields.isToday;
+    fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
+    fields.isCompleted.classList.contains('checked') == true ? task.isCompleted = true : task.isCompleted = false;
     return task;
 }

@@ -39,7 +39,7 @@ function resetFields(modal) {
 
 // addTask adds a given task to the uncompleted tasks
 function addTask(task) {
-    let html = '<div class="task-container flexbox"' + (task.isToday == true ? ' data-is-Today="true">' : ' data-is-Today="false">');
+    let html = '<div class="task-container flexbox" id="' + task.ID + '" ' + (task.isToday == true ? ' data-is-Today="true">' : ' data-is-Today="false">');
     html += '<a class="fa fa-circle icon complete-circle"></a>';
     html += '<div class="task-text">';
     html += '<div class="task-desc">' + task.taskDesc + '</div>';
@@ -57,6 +57,16 @@ function updateTask(newTask) {
     selectedTask.querySelector('.task-dueDate').innerHTML = getDisplayDate(newTask.dueDate);
     let isImp = selectedTask.querySelector('.important-star');
     newTask.isImp == true ? isImp.classList.add('important') : isImp.classList.remove('important');
+}
+
+function deleteTask(taskID) {
+    let task = document.getElementById(taskID);
+    let completedTasks = document.getElementsByClassName('completed-tasks flexbox')[0];
+
+    task.remove();
+    if (completedTasks.children.length == 1) {
+        document.getElementById('completed-div').style.display = 'none';
+    }
 }
 
 function showAddTaskPopUp() {
