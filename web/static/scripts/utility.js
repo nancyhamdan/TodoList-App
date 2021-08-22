@@ -89,8 +89,8 @@ function createSelectedTaskInfo() {
     let fields = getSelectedTaskFields();
     let task = {};
     task.ID = getSelectedTaskID();
-    task.taskDesc = fields.taskDesc.value;
-    task.dueDate = getDate(fields.dueDate.value);
+    task.taskDesc = fields.taskDesc.innerHTML;
+    task.dueDate = getDate(fields.dueDate.innerHTML);
     task.isToday = fields.isToday;
     fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
     fields.isCompleted.classList.contains('checked') == true ? task.isCompleted = true : task.isCompleted = false;
