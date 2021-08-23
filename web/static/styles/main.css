@@ -207,7 +207,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     width: 35%;
-    height: 74%;
+    height: 83%;
     background-color: #81B29A;
     border-radius: 1.5vw;
     animation: bringPopUpDown 0.5s ease;
@@ -254,6 +254,8 @@ body {
     border-radius: 0.5vw;
     width: 80%;
     margin-right: 0;
+    resize: none;
+    flex-shrink: 0;
 }
 
 .modal-icons {
@@ -316,4 +318,28 @@ body {
 
 .important {
     color: rgb(129, 217, 255);
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-input[type="date"] {
+    margin-bottom: 2.25vh;
+}
+
+.rmv-due-date {
+    background-color: #004777;
+    font-size: 95%;
+    border-radius: 0.95vw;
+}
+
+.rmv-due-date:hover {
+    background-color: #035e9b;
+    cursor: pointer;
+}
+
+.rmv-dd-container {
+    margin-top: 0;
+    margin-bottom: 3.5vh;
 }

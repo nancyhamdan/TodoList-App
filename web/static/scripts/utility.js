@@ -1,4 +1,7 @@
 function getDisplayDate(dueDate) {
+    if (dueDate == '') {
+        return dueDate;
+    }
     let date = new Date(dueDate);
 
     let dayName = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date);
@@ -44,7 +47,6 @@ function getDate(displayDate) {
     let year = displayDate.slice(12, );
 
     let date = year + '-' + getMonth(monthText) + '-' + day;
-    console.log(typeof date, date);
     return date;
 }
 
@@ -67,7 +69,6 @@ function getModalFields(modal) {
 
 function createTaskInfoFromModal(fields) {
     let task = {};
-    task.ID = getSelectedTaskID();
     task.taskDesc = fields.taskDesc.value;
     task.dueDate = fields.dueDate.value;
     fields.isToday.classList.contains('today') == true ? task.isToday = true : task.isToday = false;

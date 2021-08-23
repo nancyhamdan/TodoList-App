@@ -12,9 +12,9 @@ window.onclick = function(event) {
 
     // Hide the currently shown Pop Up when clicking away from it
     if (target.classList.contains('modal')) {
-        hideAddTaskPopUp(event);
-        hideUpdateTaskPopUp();
-        hideDeleteTaskPopUp();
+        hideAddTaskModal();
+        hideUpdateTaskModal();
+        hideDeleteTaskModal();
     }
 
     // Select the task that was clicked
@@ -42,19 +42,24 @@ window.onclick = function(event) {
         updateTaskImportanceController(target);
     }
 
+    // Handle removing due date from a task
+    if (target.classList.contains('rmv-due-date')) {
+        removeDueDate(target);
+    }
+
 }
 
-document.getElementById('add-btn').addEventListener('click', showAddTaskPopUp);
-document.getElementById('add-modal-close').addEventListener('click', hideAddTaskPopUp);
-document.getElementById('add-modal-cancel').addEventListener('click', hideAddTaskPopUp);
+document.getElementById('add-btn').addEventListener('click', showAddTaskModal);
+document.getElementById('add-modal-close').addEventListener('click', hideAddTaskModal);
+document.getElementById('add-modal-cancel').addEventListener('click', hideAddTaskModal);
 document.getElementById('submit-add').addEventListener('click', addTaskController);
 
-document.getElementById('update-btn').addEventListener('click', showUpdateTaskPopUp);
-document.getElementById('update-modal-close').addEventListener('click', hideUpdateTaskPopUp);
-document.getElementById('update-modal-cancel').addEventListener('click', hideUpdateTaskPopUp);
+document.getElementById('update-btn').addEventListener('click', showUpdateTaskModal);
+document.getElementById('update-modal-close').addEventListener('click', hideUpdateTaskModal);
+document.getElementById('update-modal-cancel').addEventListener('click', hideUpdateTaskModal);
 document.getElementById('submit-update').addEventListener('click', updateTaskController);
 
-document.getElementById('delete-btn').addEventListener('click', showDeleteTaskPopUp);
-document.getElementById('delete-modal-close').addEventListener('click', hideDeleteTaskPopUp);
-document.getElementById('delete-modal-cancel').addEventListener('click', hideDeleteTaskPopUp);
+document.getElementById('delete-btn').addEventListener('click', showDeleteTaskModal);
+document.getElementById('delete-modal-close').addEventListener('click', hideDeleteTaskModal);
+document.getElementById('delete-modal-cancel').addEventListener('click', hideDeleteTaskModal);
 document.getElementById('submit-delete').addEventListener('click', deleteTaskController);

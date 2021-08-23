@@ -43,7 +43,11 @@ function addTask(task) {
     html += '<a class="fa fa-circle icon complete-circle"></a>';
     html += '<div class="task-text">';
     html += '<div class="task-desc">' + task.taskDesc + '</div>';
-    html += '<div class="task-dueDate">' + getDisplayDate(task.dueDate) + '</div>';
+    if (task.dueDate != "") {
+        html += '<div class="task-dueDate hidden">' + getDisplayDate(task.dueDate) + '</div>';
+    } else {
+        html += '<div class="task-dueDate"></div>';
+    }
     html += '</div>';
     html += '<a class="fa fa-star icon important-star' + (task.isImp == true ? ' important">' : '">') + '</a>';
     html += '</div>';
@@ -54,7 +58,11 @@ function addTask(task) {
 // updateTask updates the currently selected task to newTask
 function updateTask(newTask) {
     selectedTask.querySelector('.task-desc').innerHTML = newTask.taskDesc;
-    selectedTask.querySelector('.task-dueDate').innerHTML = getDisplayDate(newTask.dueDate);
+    let taskDueDate = selectedTask.querySelector('.task-dueDate');
+    taskDueDate.innerHTML = getDisplayDate(newTask.dueDate);
+    if (taskDueDate.innerHTML != "") {
+        taskDueDate.classList.remove('hidden');
+    }
     let isImp = selectedTask.querySelector('.important-star');
     newTask.isImp == true ? isImp.classList.add('important') : isImp.classList.remove('important');
 }
@@ -69,17 +77,22 @@ function deleteTask(taskID) {
     }
 }
 
-function showAddTaskPopUp() {
+function removeDueDate(rmvButton) {
+    let dueDate = rmvButton.closest('.modal').querySelector('.modal-input[type="date"]');
+    dueDate.value = "";
+}
+
+function showAddTaskModal() {
     document.getElementById('add-modal').style.display = "flex";
 }
 
-function hideAddTaskPopUp() {
+function hideAddTaskModal() {
     document.getElementById('add-modal').style.display = "none";
     resetFields(document.getElementById('add-task-form'));
 }
 
-// showUpdateTaskPopUp displays the update task modal by getting the selected task's info and filling the modal with it
-function showUpdateTaskPopUp() {
+// showUpdateTaskModal displays the update task modal by getting the selected task's info and filling the modal with it
+function showUpdateTaskModal() {
     let updateModal = document.getElementById('update-modal');
     let taskDesc = updateModal.querySelector('.modal-input[type="text"]');
     let dueDate = updateModal.querySelector('.modal-input[type="date"]');
@@ -94,15 +107,15 @@ function showUpdateTaskPopUp() {
     updateModal.style.display = "flex";
 }
 
-function hideUpdateTaskPopUp() {
+function hideUpdateTaskModal() {
     document.getElementById('update-modal').style.display = "none";
 }
 
-function showDeleteTaskPopUp() {
+function showDeleteTaskModal() {
     document.getElementById('delete-modal').style.display = "flex";
 }
 
-function hideDeleteTaskPopUp() {
+function hideDeleteTaskModal() {
     document.getElementById('delete-modal').style.display = "none";
 }
 
