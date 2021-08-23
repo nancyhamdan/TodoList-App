@@ -10,18 +10,19 @@ function addTaskController() {
     task.ID = "8765"; // mock value
     addTask(task);
     resetFields(addModal);
-    hideAddTaskPopUp();
+    hideAddTaskModal();
 }
 
 function updateTaskController() {
     let updateModal = document.getElementById('update-modal');
     let fields = getModalFields(updateModal);
     let task = createTaskInfoFromModal(fields);
+    task.ID = getSelectedTaskID();
     let taskJSON = convertToJSON(task);
     console.log(taskJSON);
 
     updateTask(task);
-    hideUpdateTaskPopUp();
+    hideUpdateTaskModal();
 }
 
 function updateTaskCompletionController(completeButton) {
@@ -45,5 +46,5 @@ function deleteTaskController() {
     console.log(taskJSON);
 
     deleteTask(task.ID);
-    hideDeleteTaskPopUp();
+    hideDeleteTaskModal();
 }
