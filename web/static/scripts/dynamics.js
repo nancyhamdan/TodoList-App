@@ -128,6 +128,18 @@ function removeDueDate(rmvButton) {
 }
 
 function showAddTaskModal() {
+    let page = document.getElementById('page').dataset.page;
+    let addModal = document.getElementById('add-modal');
+
+    if (page == 'Today') {
+        let isToday = addModal.querySelector('.fa-sun');
+        isToday.classList.add('today');
+    }
+    if (page == 'Important') {
+        let isImp = addModal.querySelector('.fa-star');
+        isImp.classList.add('important');
+    }
+
     document.getElementById('add-modal').style.display = "flex";
 }
 
@@ -190,9 +202,19 @@ function toggleTaskComplete(completeButton) {
 }
 
 function toggleIsToday(icon) {
-    icon.classList.contains('today') == true ? icon.classList.remove('today') : icon.classList.add('today');
+    let page = document.getElementById('page').dataset.page;
+    if (page == 'Today' && icon.closest('#add-modal')) {
+        alert('To add a task in the "Today" list, it needs to have the "Add to Today" option');
+    } else {
+        icon.classList.contains('today') == true ? icon.classList.remove('today') : icon.classList.add('today');
+    }
 }
 
 function toggleIsImportant(icon) {
-    icon.classList.contains('important') == true ? icon.classList.remove('important') : icon.classList.add('important');
+    let page = document.getElementById('page').dataset.page;
+    if (page == 'Important' && icon.closest('#add-modal')) {
+        alert('To add a task in the "Important" list need to have the "Mark as Important" option');
+    } else {
+        icon.classList.contains('important') == true ? icon.classList.remove('important') : icon.classList.add('important');
+    }
 }
