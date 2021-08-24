@@ -44,9 +44,9 @@ function addTask(task) {
     html += '<div class="task-text">';
     html += '<div class="task-desc">' + task.taskDesc + '</div>';
     if (task.dueDate != "") {
-        html += '<div class="task-dueDate hidden">' + getDisplayDate(task.dueDate) + '</div>';
+        html += '<div class="task-dueDate">' + getDisplayDate(task.dueDate) + '</div>';
     } else {
-        html += '<div class="task-dueDate"></div>';
+        html += '<div class="task-dueDate hidden"></div>';
     }
     html += '</div>';
     html += '<a class="fa fa-star icon important-star' + (task.isImp == true ? ' important">' : '">') + '</a>';
@@ -55,25 +55,64 @@ function addTask(task) {
     document.getElementsByClassName('uncompleted-tasks')[0].innerHTML += html;
 }
 
+function shouldDeleteTask(task) {
+    let page = document.getElementById('page').dataset.page;
+
+    switch (page) {
+        case 'Today':
+            if (task.isToday == false) {
+                return true;
+            }
+            break;
+        case 'Important':
+            if (task.isImp == false) {
+                return true;
+            }
+            break;
+        case 'Planned':
+            if (task.dueDate == '') {
+                return true;
+            }
+            break;
+    }
+    return false;
+}
+
 // updateTask updates the currently selected task to newTask
 function updateTask(newTask) {
-    selectedTask.querySelector('.task-desc').innerHTML = newTask.taskDesc;
-    let taskDueDate = selectedTask.querySelector('.task-dueDate');
-    taskDueDate.innerHTML = getDisplayDate(newTask.dueDate);
-    if (taskDueDate.innerHTML != "") {
-        taskDueDate.classList.remove('hidden');
+    let shouldTaskBeDeleted = shouldDeleteTask(newTask);
+    if (shouldTaskBeDeleted == false) {
+        selectedTask.querySelector('.task-desc').innerHTML = newTask.taskDesc;
+
+        let taskDueDate = selectedTask.querySelector('.task-dueDate');
+        taskDueDate.innerHTML = getDisplayDate(newTask.dueDate);
+        if (taskDueDate.innerHTML != "") {
+            taskDueDate.classList.remove('hidden');
+        }
+
+        newTask.isToday == true ? selectedTask.dataset.isToday = true : selectedTask.dataset.isToday = false;
+
+        let isImp = selectedTask.querySelector('.important-star');
+        newTask.isImp == true ? isImp.classList.add('important') : isImp.classList.remove('important');
+    } else {
+        deleteTask(selectedTask.id);
     }
-    let isImp = selectedTask.querySelector('.important-star');
-    newTask.isImp == true ? isImp.classList.add('important') : isImp.classList.remove('important');
 }
 
 function deleteTask(taskID) {
     let task = document.getElementById(taskID);
     let completedTasks = document.getElementsByClassName('completed-tasks flexbox')[0];
+    let uncompletedTasks = document.getElementsByClassName('uncompleted-tasks flexbox')[0];
+    let shouldHideButtons = false;
 
     task.remove();
     if (completedTasks.children.length == 1) {
         document.getElementById('completed-div').style.display = 'none';
+        shouldHideButtons = true;
+    }
+
+    if (uncompletedTasks.children.length == 0 && shouldHideButtons == true) {
+        hideButtons();
     }
 }
 
