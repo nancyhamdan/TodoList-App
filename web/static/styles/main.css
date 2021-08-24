@@ -343,3 +343,9 @@ body {
     margin-top: 0;
     margin-bottom: 3.5vh;
 }
+
+.no-tasks-msg {
+    color: #D79121;
+    font-size: 150%;
+    margin-top: 25vh;
+}

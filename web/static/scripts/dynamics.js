@@ -52,6 +52,11 @@ function addTask(task) {
     html += '<a class="fa fa-star icon important-star' + (task.isImp == true ? ' important">' : '">') + '</a>';
     html += '</div>';
 
+    let noTasksMsg = document.getElementsByClassName('no-tasks-msg')[0]
+    if (noTasksMsg.classList.contains('hidden') == false) {
+        noTasksMsg.classList.add('hidden');
+    }
+
     document.getElementsByClassName('uncompleted-tasks')[0].innerHTML += html;
 }
 
@@ -110,9 +115,10 @@ function deleteTask(taskID) {
         document.getElementById('completed-div').style.display = 'none';
         shouldHideButtons = true;
     }
-
     if (uncompletedTasks.children.length == 0 && shouldHideButtons == true) {
         hideButtons();
+        console.log(document.getElementsByClassName('no-tasks-msg hidden'));
+        document.getElementsByClassName('no-tasks-msg')[0].classList.remove('hidden');
     }
 }
 
