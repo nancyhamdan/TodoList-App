@@ -1,10 +1,10 @@
 package models
 
 type Task struct {
-	taskId      int
-	description string
-	dueDate     string
-	isImportant bool
-	isCompleted bool
-	isToday     bool
+	TaskId      int
+	Description string
+	DueDate     string
+	IsImportant bool
+	IsCompleted bool
+	IsToday     bool
 }
