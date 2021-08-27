@@ -8,6 +8,16 @@ import (
 	"github.com/nancyhamdan/TodoList-App/pkg/handlers"
 )
 
+func createRouter() *http.ServeMux {
+	r := http.NewServeMux()
+	staticFilesServer := http.FileServer(http.Dir("../web/static"))
+
+	r.HandleFunc("/", handlers.IndexHandler)
+	r.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
+
+	return r
+}
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -15,12 +25,7 @@ func main() {
 	}
 	fmt.Println("running on port:", port)
 
-	mux := http.NewServeMux()
+	router := createRouter()
 
-	mux.HandleFunc("/", handlers.IndexHandler)
-
-	staticFilesServer := http.FileServer(http.Dir("../web/static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
-
-	http.ListenAndServe(":"+port, mux)
+	http.ListenAndServe(":"+port, router)
 }
