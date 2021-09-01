@@ -35,7 +35,8 @@ func LoadConfig(filename string) {
 
 func InitDb() {
 	LoadConfig("../config.json")
-	db, err := sql.Open("mysql", cfg.DbUser+":"+cfg.DbPass+"@("+cfg.DbHost+":"+cfg.DbPort+")/"+cfg.DbName)
+	var err error
+	db, err = sql.Open("mysql", cfg.DbUser+":"+cfg.DbPass+"@("+cfg.DbHost+":"+cfg.DbPort+")/"+cfg.DbName)
 	if err != nil {
 		log.Fatal(err)
 	}
