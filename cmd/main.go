@@ -17,6 +17,7 @@ func createRouter() *http.ServeMux {
 	r.HandleFunc("/", handlers.IndexHandler)
 	r.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
 	r.HandleFunc("/signup", handlers.SignUpPostHandler)
+	r.HandleFunc("/login", handlers.LoginPostHandler)
 
 	return r
 }
@@ -29,7 +30,6 @@ func main() {
 	fmt.Println("running on port:", port)
 
 	models.InitDb()
-
 	router := createRouter()
 	http.ListenAndServe(":"+port, router)
 }
