@@ -8,6 +8,7 @@ import (
 
 	"github.com/nancyhamdan/TodoList-App/pkg/auth"
 	"github.com/nancyhamdan/TodoList-App/pkg/models"
+	"github.com/nancyhamdan/TodoList-App/pkg/utils"
 )
 
 func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +30,7 @@ func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-
+		w.WriteHeader(http.StatusOK)
 		// http.Redirect(w, r, "/login", http.StatusFound)
 	} else {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -84,4 +85,40 @@ func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	var tmpl = template.Must(template.ParseFiles("../web/templates/index.gohtml"))
 	tmpl.Execute(w, nil)
+}
+
+func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		var task models.Task
+
+		err := json.NewDecoder(r.Body).Decode(&task)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		username, err := utils.GetCurrentUsername(cookie)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		err = models.AddTask(&task, username)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+
+	} else {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
 }

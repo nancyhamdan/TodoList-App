@@ -19,6 +19,7 @@ func createRouter() *http.ServeMux {
 	r.HandleFunc("/login", handlers.LoginPostHandler)
 	r.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
 	r.HandleFunc("/", middleware.AuthRequired(handlers.IndexHandler))
+	r.HandleFunc("/add-task", middleware.AuthRequired(handlers.AddTaskHandler))
 
 	return r
 }
