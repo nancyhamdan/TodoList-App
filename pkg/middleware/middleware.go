@@ -20,9 +20,8 @@ func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
 		}
 
 		tokenStr := cookie.Value
-		claims := &jwt.MapClaims{}
 
-		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 			return auth.JwtSecretKey, nil
 		})
 
