@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/nancyhamdan/TodoList-App/pkg/middleware"
 	"github.com/nancyhamdan/TodoList-App/pkg/models"
 
 	"github.com/nancyhamdan/TodoList-App/pkg/handlers"
@@ -14,10 +15,10 @@ func createRouter() *http.ServeMux {
 	r := http.NewServeMux()
 	staticFilesServer := http.FileServer(http.Dir("../web/static"))
 
-	r.HandleFunc("/", handlers.IndexHandler)
-	r.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
 	r.HandleFunc("/signup", handlers.SignUpPostHandler)
 	r.HandleFunc("/login", handlers.LoginPostHandler)
+	r.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
+	r.HandleFunc("/", middleware.AuthRequired(handlers.IndexHandler))
 
 	return r
 }

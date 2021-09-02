@@ -7,14 +7,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var jwtSecretKey = []byte("ijofwqhiufreq")
+var JwtSecretKey = []byte("ijofwqhiufreq")
 
 func CreateToken(username string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
 	})
 
-	tokenString, err := token.SignedString(jwtSecretKey)
+	tokenString, err := token.SignedString(JwtSecretKey)
 	if err != nil {
 		log.Println(err)
 		return "", err
