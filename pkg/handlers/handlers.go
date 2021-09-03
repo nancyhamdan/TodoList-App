@@ -122,3 +122,27 @@ func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
 }
+
+func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		var newTask models.Task
+
+		err := json.NewDecoder(r.Body).Decode(&newTask)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		err = models.UpdateTask(&newTask)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+	} else {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
