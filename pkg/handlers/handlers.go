@@ -158,7 +158,7 @@ func UpdateTaskImportanceHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = newTask.UpdateTaskImportance()
+		err = newTask.UpdateImportance()
 		if err != nil {
 			log.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
@@ -182,7 +182,31 @@ func UpdateTaskCompletionHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = newTask.UpdateTaskCompletion()
+		err = newTask.UpdateCompletion()
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+	} else {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		var task models.Task
+
+		err := json.NewDecoder(r.Body).Decode(&task)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		err = task.Delete()
 		if err != nil {
 			log.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
