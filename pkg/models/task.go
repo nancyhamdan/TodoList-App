@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"log"
 )
 
@@ -14,36 +15,26 @@ type Task struct {
 }
 
 func AddTask(task *Task, username string) error {
-	var taskId int64
 	var err error
+	var res sql.Result
 
 	if task.DueDate != "" {
-		res, err := db.Exec("INSERT INTO Tasks(description, dueDate, isToday, isImportant, isCompleted) VALUES(?, ?, ?, ?, ?)",
+		res, err = db.Exec("INSERT INTO Tasks(description, dueDate, isToday, isImportant, isCompleted) VALUES(?, ?, ?, ?, ?)",
 			task.Description, task.DueDate, task.IsToday, task.IsImportant, task.IsCompleted)
-
-		if err != nil {
-			log.Println(err)
-			return err
-		}
-
-		taskId, err = res.LastInsertId()
-		if err != nil {
-			log.Println(err)
-			return err
-		}
 	} else {
-		res, err := db.Exec("INSERT INTO Tasks(description, isToday, isImportant, isCompleted) VALUES(?, ?, ?, ?)",
+		res, err = db.Exec("INSERT INTO Tasks(description, isToday, isImportant, isCompleted) VALUES(?, ?, ?, ?)",
 			task.Description, task.IsToday, task.IsImportant, task.IsCompleted)
-		if err != nil {
-			log.Println(err)
-			return err
-		}
+	}
 
-		taskId, err = res.LastInsertId()
-		if err != nil {
-			log.Println(err)
-			return err
-		}
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	taskId, err := res.LastInsertId()
+	if err != nil {
+		log.Println(err)
+		return err
 	}
 
 	_, err = db.Exec("INSERT INTO TasksByUser VALUES(?, ?)", taskId, username)
@@ -55,15 +46,30 @@ func AddTask(task *Task, username string) error {
 	return nil
 }
 
-// func (task *Task) UpdateTask() error {
+func UpdateTask(newTask *Task) error {
+	var err error
+
+	if newTask.DueDate != "" {
+		_, err = db.Exec("UPDATE Tasks SET description = ?, dueDate = ?, isToday = ?, isImportant = ?, isCompleted = ? WHERE taskId = ?",
+			newTask.Description, newTask.DueDate, newTask.IsToday, newTask.IsImportant, newTask.IsCompleted, newTask.ID)
+	} else {
+		_, err = db.Exec("UPDATE Tasks SET description = ?, dueDate = NULL, isToday = ?, isImportant = ?, isCompleted = ? WHERE taskId = ?",
+			newTask.Description, newTask.IsToday, newTask.IsImportant, newTask.IsCompleted, newTask.ID)
+	}
+
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
+
+// func (task *Task) UpdateTaskImportance(newImpStatus bool) error {
 
 // }
 
-// func (task *Task) UpdateTaskImportance() error {
-
-// }
-
-// func (task *Task) UpdateTaskCompletion() error {
+// func (task *Task) UpdateTaskCompletion(newComplStatus bool) error {
 
 // }
 
