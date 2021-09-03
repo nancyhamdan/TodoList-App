@@ -65,13 +65,27 @@ func UpdateTask(newTask *Task) error {
 	return nil
 }
 
-// func (task *Task) UpdateTaskImportance(newImpStatus bool) error {
+func (task *Task) UpdateTaskImportance() error {
+	_, err := db.Exec("UPDATE Tasks SET isImportant = ? WHERE taskId = ?", task.IsImportant, task.ID)
 
-// }
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 
-// func (task *Task) UpdateTaskCompletion(newComplStatus bool) error {
+	return nil
+}
 
-// }
+func (task *Task) UpdateTaskCompletion() error {
+	_, err := db.Exec("UPDATE Tasks SET isCompleted = ? WHERE taskId = ?", task.IsCompleted, task.ID)
+
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
 
 // func (task *Task) DeleteTask() error {
 

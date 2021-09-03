@@ -21,6 +21,8 @@ func createRouter() *http.ServeMux {
 	r.HandleFunc("/", middleware.AuthRequired(handlers.IndexHandler))
 	r.HandleFunc("/add-task", middleware.AuthRequired(handlers.AddTaskHandler))
 	r.HandleFunc("/update-task", handlers.UpdateTaskHandler)
+	r.HandleFunc("/update-task-importance", handlers.UpdateTaskImportanceHandler)
+	r.HandleFunc("/update-task-completion", handlers.UpdateTaskCompletionHandler)
 
 	return r
 }
