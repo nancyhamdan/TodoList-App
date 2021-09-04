@@ -147,10 +147,20 @@ func GetAllTodayTasks(username string) ([]*Task, error) {
 	return tasks, nil
 }
 
-// func GetAllImportantTasks(username string) ([]*Task, error) {
+func GetAllImportantTasks(username string) ([]*Task, error) {
+	tasks, err := GetTasks(username, "SELECT Tasks.taskId, Tasks.description, Tasks.dueDate, Tasks.isToday, Tasks.isImportant, Tasks.isCompleted FROM Tasks INNER JOIN TasksByUser ON TasksByUser.taskId = Tasks.taskId WHERE TasksByUser.username = ? AND Tasks.isImportant = TRUE")
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return tasks, nil
+}
 
-// }
-
-// func GetAllPlannedTasks(username string) ([]*Task, error) {
-
-// }
+func GetAllPlannedTasks(username string) ([]*Task, error) {
+	tasks, err := GetTasks(username, "SELECT Tasks.taskId, Tasks.description, Tasks.dueDate, Tasks.isToday, Tasks.isImportant, Tasks.isCompleted FROM Tasks INNER JOIN TasksByUser ON TasksByUser.taskId = Tasks.taskId WHERE TasksByUser.username = ? AND Tasks.dueDate != NULL")
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return tasks, nil
+}
