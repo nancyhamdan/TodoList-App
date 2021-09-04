@@ -100,6 +100,8 @@ func (user *User) GetHashedPassword() (string, error) {
 	return hashedPassword, nil
 }
 
+type GetTasksFunc func(username string) ([]*Task, error)
+
 func GetTasks(username string, query string) ([]*Task, error) {
 	res, err := db.Query(query, username)
 	if err != nil {
@@ -157,7 +159,7 @@ func GetAllImportantTasks(username string) ([]*Task, error) {
 }
 
 func GetAllPlannedTasks(username string) ([]*Task, error) {
-	tasks, err := GetTasks(username, "SELECT Tasks.taskId, Tasks.description, Tasks.dueDate, Tasks.isToday, Tasks.isImportant, Tasks.isCompleted FROM Tasks INNER JOIN TasksByUser ON TasksByUser.taskId = Tasks.taskId WHERE TasksByUser.username = ? AND Tasks.dueDate != NULL")
+	tasks, err := GetTasks(username, "SELECT Tasks.taskId, Tasks.description, Tasks.dueDate, Tasks.isToday, Tasks.isImportant, Tasks.isCompleted FROM Tasks INNER JOIN TasksByUser ON TasksByUser.taskId = Tasks.taskId WHERE TasksByUser.username = ? AND Tasks.dueDate IS NOT NULL")
 	if err != nil {
 		log.Println(err)
 		return nil, err

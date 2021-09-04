@@ -219,7 +219,7 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
+func GetTasksHandler(w http.ResponseWriter, r *http.Request, getTasksFunc models.GetTasksFunc) {
 	if r.Method == http.MethodGet {
 		cookie, err := r.Cookie("token")
 		if err != nil {
@@ -235,7 +235,7 @@ func GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		tasks, err := models.GetAllTasks(username)
+		tasks, err := getTasksFunc(username)
 		if err != nil {
 			log.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -255,38 +255,18 @@ func GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
+	GetTasksHandler(w, r, models.GetAllTasks)
+}
+
 func GetAllTodayTasksHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		cookie, err := r.Cookie("token")
-		if err != nil {
-			log.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+	GetTasksHandler(w, r, models.GetAllTodayTasks)
+}
 
-		username, err := utils.GetCurrentUsername(cookie)
-		if err != nil {
-			log.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+func GetAllImportantTasksHandler(w http.ResponseWriter, r *http.Request) {
+	GetTasksHandler(w, r, models.GetAllImportantTasks)
+}
 
-		tasks, err := models.GetAllTodayTasks(username)
-		if err != nil {
-			log.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(tasks)
-		if err != nil {
-			log.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-	} else {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-	}
+func GetAllPlannedTasksHandler(w http.ResponseWriter, r *http.Request) {
+	GetTasksHandler(w, r, models.GetAllPlannedTasks)
 }

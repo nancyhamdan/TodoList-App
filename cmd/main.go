@@ -26,6 +26,8 @@ func createRouter() *http.ServeMux {
 	r.HandleFunc("/delete-task", handlers.DeleteTaskHandler)
 	r.HandleFunc("/get-all-tasks", middleware.AuthRequired(handlers.GetAllTasksHandler))
 	r.HandleFunc("/get-all-today-tasks", middleware.AuthRequired(handlers.GetAllTodayTasksHandler))
+	r.HandleFunc("/get-all-imp-tasks", middleware.AuthRequired(handlers.GetAllImportantTasksHandler))
+	r.HandleFunc("/get-all-planned-tasks", middleware.AuthRequired(handlers.GetAllPlannedTasksHandler))
 
 	return r
 }
