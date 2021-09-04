@@ -8,26 +8,25 @@ import (
 	"github.com/nancyhamdan/TodoList-App/pkg/middleware"
 	"github.com/nancyhamdan/TodoList-App/pkg/models"
 
+	"github.com/gorilla/mux"
 	"github.com/nancyhamdan/TodoList-App/pkg/handlers"
 )
 
-func createRouter() *http.ServeMux {
-	r := http.NewServeMux()
+func createRouter() *mux.Router {
+	r := mux.NewRouter()
 	staticFilesServer := http.FileServer(http.Dir("../web/static"))
 
-	r.HandleFunc("/signup", handlers.SignUpPostHandler)
-	r.HandleFunc("/login", handlers.LoginPostHandler)
+	r.HandleFunc("/signup", handlers.SignUpPostHandler).Methods("POST")
+	r.HandleFunc("/login", handlers.LoginPostHandler).Methods("POST")
 	r.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
-	r.HandleFunc("/", middleware.AuthRequired(handlers.IndexHandler))
-	r.HandleFunc("/add-task", middleware.AuthRequired(handlers.AddTaskHandler))
-	r.HandleFunc("/update-task", handlers.UpdateTaskHandler)
-	r.HandleFunc("/update-task-importance", handlers.UpdateTaskImportanceHandler)
-	r.HandleFunc("/update-task-completion", handlers.UpdateTaskCompletionHandler)
-	r.HandleFunc("/delete-task", handlers.DeleteTaskHandler)
-	r.HandleFunc("/get-all-tasks", middleware.AuthRequired(handlers.GetAllTasksHandler))
-	r.HandleFunc("/get-all-today-tasks", middleware.AuthRequired(handlers.GetAllTodayTasksHandler))
-	r.HandleFunc("/get-all-imp-tasks", middleware.AuthRequired(handlers.GetAllImportantTasksHandler))
-	r.HandleFunc("/get-all-planned-tasks", middleware.AuthRequired(handlers.GetAllPlannedTasksHandler))
+	r.HandleFunc("/", middleware.AuthRequired(handlers.IndexHandler)).Methods("GET")
+	r.HandleFunc("/tasks", middleware.AuthRequired(handlers.AddTaskHandler)).Methods("POST")
+	r.HandleFunc("/tasks/{id}", middleware.AuthRequired(handlers.UpdateTaskHandler)).Methods("PUT")
+	r.HandleFunc("/tasks/{id}", middleware.AuthRequired(handlers.DeleteTaskHandler)).Methods("DELETE")
+	r.HandleFunc("/tasks", middleware.AuthRequired(handlers.GetAllTasksHandler)).Methods("GET")
+	r.HandleFunc("/tasks/today", middleware.AuthRequired(handlers.GetAllTodayTasksHandler)).Methods("GET")
+	r.HandleFunc("/tasks/important", middleware.AuthRequired(handlers.GetAllImportantTasksHandler)).Methods("GET")
+	r.HandleFunc("/tasks/planned", middleware.AuthRequired(handlers.GetAllPlannedTasksHandler)).Methods("GET")
 
 	return r
 }
