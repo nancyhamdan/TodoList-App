@@ -243,14 +243,49 @@ func GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
 		err = json.NewEncoder(w).Encode(tasks)
 		if err != nil {
 			log.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+	} else {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
 
+func GetAllTodayTasksHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		username, err := utils.GetCurrentUsername(cookie)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		tasks, err := models.GetAllTodayTasks(username)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
+		err = json.NewEncoder(w).Encode(tasks)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	} else {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
