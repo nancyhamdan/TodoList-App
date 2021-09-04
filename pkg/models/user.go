@@ -100,9 +100,8 @@ func (user *User) GetHashedPassword() (string, error) {
 	return hashedPassword, nil
 }
 
-func GetAllTasks(username string) ([]*Task, error) {
-	res, err := db.Query("SELECT Tasks.taskId, Tasks.description, Tasks.dueDate, Tasks.isToday, Tasks.isImportant, Tasks.isCompleted FROM Tasks INNER JOIN TasksByUser ON TasksByUser.taskId = Tasks.taskId WHERE TasksByUser.username = ?",
-		username)
+func GetTasks(username string, query string) ([]*Task, error) {
+	res, err := db.Query(query, username)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -130,32 +129,20 @@ func GetAllTasks(username string) ([]*Task, error) {
 	return tasks, nil
 }
 
-func GetAllTodayTasks(username string) ([]*Task, error) {
-	res, err := db.Query("SELECT Tasks.taskId, Tasks.description, Tasks.dueDate, Tasks.isToday, Tasks.isImportant, Tasks.isCompleted FROM Tasks INNER JOIN TasksByUser ON TasksByUser.taskId = Tasks.taskId WHERE TasksByUser.username = ? AND Tasks.isToday = TRUE",
-		username)
+func GetAllTasks(username string) ([]*Task, error) {
+	tasks, err := GetTasks(username, "SELECT Tasks.taskId, Tasks.description, Tasks.dueDate, Tasks.isToday, Tasks.isImportant, Tasks.isCompleted FROM Tasks INNER JOIN TasksByUser ON TasksByUser.taskId = Tasks.taskId WHERE TasksByUser.username = ?")
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
-	defer res.Close()
+	return tasks, nil
+}
 
-	var tasks []*Task
-
-	var tmpDueDate interface{}
-	for res.Next() {
-		var task Task
-
-		err := res.Scan(&task.ID, &task.Description, &tmpDueDate, &task.IsToday, &task.IsImportant, &task.IsCompleted)
-		if err != nil {
-			log.Println(err)
-			return nil, err
-		}
-		task.DueDate = fmt.Sprintf("%s", tmpDueDate)
-		if task.DueDate == "%!s(<nil>)" {
-			task.DueDate = ""
-		}
-
-		tasks = append(tasks, &task)
+func GetAllTodayTasks(username string) ([]*Task, error) {
+	tasks, err := GetTasks(username, "SELECT Tasks.taskId, Tasks.description, Tasks.dueDate, Tasks.isToday, Tasks.isImportant, Tasks.isCompleted FROM Tasks INNER JOIN TasksByUser ON TasksByUser.taskId = Tasks.taskId WHERE TasksByUser.username = ? AND Tasks.isToday = TRUE")
+	if err != nil {
+		log.Println(err)
+		return nil, err
 	}
 	return tasks, nil
 }
