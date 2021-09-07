@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"log"
+	"time"
 )
 
 type Task struct {
@@ -79,4 +80,15 @@ func (task *Task) Delete() error {
 	}
 
 	return nil
+}
+
+func (task *Task) GetFormattedDueDate() string {
+	date, err := time.Parse("2006-01-02", task.DueDate)
+	if err != nil {
+		log.Println(err)
+		return ""
+	}
+	dateStr := date.Format("Mon, 02 Jan 2006")
+
+	return dateStr
 }

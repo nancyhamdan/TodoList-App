@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"text/template"
@@ -149,7 +150,7 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func GetTasksHandler(w http.ResponseWriter, r *http.Request, getTasksFunc models.GetTasksFunc) {
+func GetTasksHandler(w http.ResponseWriter, r *http.Request, getTasksFunc models.GetTasksFunc, tmplToExec string) {
 	cookie, err := r.Cookie("token")
 	if err != nil {
 		log.Println(err)
@@ -171,9 +172,10 @@ func GetTasksHandler(w http.ResponseWriter, r *http.Request, getTasksFunc models
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	err = json.NewEncoder(w).Encode(tasks)
+	tmplPath := fmt.Sprintf("../web/templates/%s.gohtml", tmplToExec)
+
+	tmpl := template.Must(template.ParseFiles(tmplPath, "../web/templates/task.gohtml"))
+	err = tmpl.ExecuteTemplate(w, tmplToExec, tasks)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -182,17 +184,17 @@ func GetTasksHandler(w http.ResponseWriter, r *http.Request, getTasksFunc models
 }
 
 func GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
-	GetTasksHandler(w, r, models.GetAllTasks)
+	GetTasksHandler(w, r, models.GetAllTasks, "alltasks")
 }
 
 func GetAllTodayTasksHandler(w http.ResponseWriter, r *http.Request) {
-	GetTasksHandler(w, r, models.GetAllTodayTasks)
+	GetTasksHandler(w, r, models.GetAllTodayTasks, "today")
 }
 
 func GetAllImportantTasksHandler(w http.ResponseWriter, r *http.Request) {
-	GetTasksHandler(w, r, models.GetAllImportantTasks)
+	GetTasksHandler(w, r, models.GetAllImportantTasks, "important")
 }
 
 func GetAllPlannedTasksHandler(w http.ResponseWriter, r *http.Request) {
-	GetTasksHandler(w, r, models.GetAllPlannedTasks)
+	GetTasksHandler(w, r, models.GetAllPlannedTasks, "planned")
 }
