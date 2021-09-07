@@ -1,0 +1,140 @@
+{{define "today"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../static/styles/main.css">
+    <meta id="page" data-page="Today">
+</head>
+
+<body>
+
+    <section class="page">
+        <div id="nav-bar">
+            <ul id="nav-menu">
+                <li><a class="flexbox active-nav" href="">Today</a></li>
+                <li><a class="flexbox" href="">Important</a></li>
+                <li><a class="flexbox" href="">Planned</a></li>
+                <li><a class="flexbox" href="">All Tasks</a></li>
+            </ul>
+        </div>
+        <div class="flexbox" id="main-content">
+            
+            <div class="flexbox" id="tasks-container">
+                {{- $length := len .}}
+                <span class="no-tasks-msg {{if eq $length 0}}hidden{{- end}}">There arent any tasks here yet.</span>
+                <div class="uncompleted-tasks flexbox">
+                    {{- range $id, $task := .}}
+                        {{- if eq $task.IsCompleted false}}
+                            {{- template "task" $task}}
+                        {{- end}}
+                    {{- end}}
+                </div>
+                <div class="completed-tasks flexbox">
+                    <div class="flexbox label" id="completed-div">Completed</div>
+                    {{- range $id, $task := .}}
+                        {{- if eq $task.IsCompleted true}}
+                            {{- template "task" $task}}
+                        {{- end}}
+                    {{- end}}
+                </div>
+            </div>
+
+            <div id="buttons-container">
+                <button class="button" id="update-btn">Update Task</button>
+                <button class="button" id="delete-btn">Delete Task</button>
+                <button class="button" id="add-btn">Add Task</button>
+            </div>
+
+            <div class="flexbox modal" id="add-modal">
+                <div class="flexbox modal-content" id="add-task-form">
+                    <a class="fa fa-times icon close" id="add-modal-close"></a>
+                    
+                    <div class="flexbox label modal-label">Task</div>
+                    <input class="modal-input" type="text">
+                    
+                    <div class="flexbox label modal-label">Due Date</div>
+                    <input class="modal-input" type="date">
+                    <div class="modal-buttons rmv-dd-container">
+                        <button class="button rmv-due-date" id="rmvDueDate-update">Remove Due Date</button>
+                    </div>
+                    
+                    <div class="flexbox modal-icons">
+                        <div class="flexbox modal-today-icon">
+                            <a class="fa fa-sun icon modal-icon"></a>
+                            Add to Today
+                        </div>
+
+                        <div class="flexbox modal-star-icon">
+                            <a class="fa fa-star icon modal-icon"></a>
+                            Mark as Important
+                        </div>
+                    </div>
+                    
+                    <div class="modal-buttons">
+                        <button class="button modal-cancel" id="add-modal-cancel">Cancel</button>
+                        <button class="button" id="submit-add">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flexbox modal" id="update-modal">
+                <div class="flexbox modal-content" id="update-task-form">
+                    <a class="fa fa-times icon close" id="update-modal-close"></a>
+                    
+                    <div class="flexbox label modal-label">Task</div>
+                    <input class="modal-input" type="text">
+                    
+                    <div class="flexbox label modal-label">Due Date</div>
+                    <input class="modal-input" type="date">
+                    <div class="modal-buttons rmv-dd-container">
+                        <button class="button rmv-due-date" id="rmvDueDate-update">Remove Due Date</button>
+                    </div>
+                    
+                    <div class="flexbox modal-icons">
+                        <div class="flexbox modal-today-icon">
+                            <a class="fa fa-sun icon modal-icon"></a>
+                            Add to Today
+                        </div>
+
+                        <div class="flexbox modal-star-icon">
+                            <a class="fa fa-star icon modal-icon"></a>
+                            Mark as Important
+                        </div>
+                    </div>
+                    
+                    <div class="modal-buttons">
+                        <button type="button" class="button modal-cancel" id="update-modal-cancel">Cancel</button>
+                        <button class="button" id="submit-update">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flexbox modal" id="delete-modal">
+                <div class="flexbox modal-content" id="delete-modal-content">
+                    <a class="fa fa-times icon close" id="delete-modal-close"></a>
+                    <p>Are you sure you want to delete this task? this action cannot be undone.</p>
+                    <div class="modal-buttons">
+                            <button class="button modal-cancel" id="delete-modal-cancel">Cancel</button>
+                            <button class="button" id="submit-delete">Delete Task</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script type="text/javascript" src="../static/scripts/utility.js" ></script>
+    <script type="text/javascript" src="../static/scripts/dynamics.js" ></script>
+    <script type="text/javascript" src="../static/scripts/controllers.js" ></script>
+    <script type="text/javascript" src="../static/scripts/event-handlers.js" ></script>
+</body>
+
+</html>
+{{end}}
