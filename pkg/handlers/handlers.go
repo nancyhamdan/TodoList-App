@@ -12,6 +12,11 @@ import (
 	"github.com/nancyhamdan/TodoList-App/pkg/utils"
 )
 
+func SignUpGetHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("../web/templates/signup.gohtml"))
+	tmpl.Execute(w, nil)
+}
+
 func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
@@ -32,6 +37,11 @@ func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	// http.Redirect(w, r, "/login", http.StatusFound)
+}
+
+func LoginGetHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("../web/templates/login.html"))
+	tmpl.Execute(w, nil)
 }
 
 func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -72,11 +82,6 @@ func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	http.Redirect(w, r, "/", http.StatusFound)
-}
-
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("../web/templates/index.gohtml"))
-	tmpl.Execute(w, nil)
 }
 
 func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
