@@ -12,7 +12,7 @@ func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
 		cookie, err := r.Cookie("token")
 		if err != nil {
 			if err == http.ErrNoCookie {
-				w.WriteHeader(http.StatusUnauthorized)
+				http.Redirect(w, r, "/login", http.StatusFound)
 				return
 			}
 			w.WriteHeader(http.StatusBadRequest)
@@ -27,7 +27,7 @@ func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
 
 		if err != nil {
 			if err == jwt.ErrSignatureInvalid || !token.Valid {
-				w.WriteHeader(http.StatusUnauthorized)
+				http.Redirect(w, r, "/login", http.StatusFound)
 				return
 			}
 			w.WriteHeader(http.StatusBadRequest)
