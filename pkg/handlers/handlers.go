@@ -40,7 +40,7 @@ func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginGetHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("../web/templates/login.html"))
+	tmpl := template.Must(template.ParseFiles("../web/templates/login.gohtml"))
 	tmpl.Execute(w, nil)
 }
 

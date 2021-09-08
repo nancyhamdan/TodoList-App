@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Signup</title>
+    <link type="text/css" rel="stylesheet" href="../static/styles/forms.css">
+</head>
+
+<body>
+    <div class="flexbox" id="form-section">
+        <div class="flexbox" id="form-container">
+            <form id="SignupForm" name="SignupForm" onsubmit="return validateForm()">
+                <label class="label" for="username">Username</label><br>
+                <input class="input" type="text" id="username" name="username" placeholder="ِِِِِEnter your username"><br>
+                <div class="error-msg" id="username-err"></div>
+
+                <label class="label" for="lname">Password</label><br>
+                <input class="input" type="password" id="password" name="password" placeholder="ِِِِِEnter your password"><br>
+                <div class="error-msg" id="password-err"></div>
+
+                <input type="checkbox" id="pass-checkbox" onclick="toggleShowPassword()">
+                <label class="label" id="pass-checkbox-label" for="pass-checkbox">Show Password</label>
+
+                <div id="buttons-container">
+                    <input class="button" id="submit-btn" type="submit" value="Signup">
+                </div>
+            </form>
+        </div>
+        <div class="error-msg">
+            {{- if . }} {{- .}} {{- end}}
+        </div>
+    </div>
+
+    <script type="text/javascript" src="../web/static/scripts/forms.js"></script>
+</body>
+
+</html>
+
+</html>

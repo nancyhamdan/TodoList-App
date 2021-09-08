@@ -1,3 +1,12 @@
+function toggleShowPassword() {
+    var box = document.getElementById('password');
+    if (box.type === 'password') {
+        box.type = 'text';
+    } else {
+        box.type = 'password';
+    }
+}
+
 function DisplayError(elementID, errorMessage, inputField) {
     document.getElementById(elementID).innerHTML = errorMessage;
     inputField.style.marginBottom = 0;
