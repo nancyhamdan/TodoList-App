@@ -16,7 +16,7 @@ func createRouter() *mux.Router {
 	r := mux.NewRouter()
 	staticFilesServer := http.FileServer(http.Dir("../web/static"))
 
-	r.Handle("/static/", http.StripPrefix("/static/", staticFilesServer))
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", staticFilesServer))
 	r.HandleFunc("/signup", handlers.SignUpGetHandler).Methods("GET")
 	r.HandleFunc("/signup", handlers.SignUpPostHandler).Methods("POST")
 	r.HandleFunc("/login", handlers.LoginGetHandler).Methods("GET")
