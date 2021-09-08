@@ -5,6 +5,7 @@
     border: 0px;
     font-family: sans-serif;
     font-weight: lighter;
+    text-decoration: none;
 }
 
 #form-section {
@@ -23,7 +24,7 @@
     border-radius: 2vh;
 }
 
-#LoginForm {
+.form {
     width: 100%;
 }
 

@@ -12,7 +12,7 @@
 <body>
     <div class="flexbox" id="form-section">
         <div class="flexbox" id="form-container">
-            <form id="LoginForm" name="LoginForm" onsubmit="return validateForm()">
+            <form class="form" id="LoginForm" name="LoginForm" onsubmit="return validateForm()">
                 <label class="label" for="username">Username</label><br>
                 <input class="input" type="text" id="username" name="username" placeholder="ِِِِِEnter your username"><br>
                 <div class="error-msg" id="username-err"></div>
@@ -25,7 +25,7 @@
                 <label class="label" id="pass-checkbox-label" for="pass-checkbox">Show Password</label>
 
                 <div id="buttons-container">
-                    <a class="button" id="signup-btn" href="/signup">Signup</a>
+                    <a class="button flexbox" id="signup-btn" href="/signup">Signup</a>
                     <input class="button" id="submit-btn" type="submit" value="Login">
                 </div>
             </form>
@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="/web/static/scripts/forms.js"></script>
+    <script type="text/javascript" src="../static/scripts/forms.js"></script>
 </body>
 
 </html>
