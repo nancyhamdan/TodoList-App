@@ -7,6 +7,7 @@ import (
 
 	"github.com/nancyhamdan/TodoList-App/pkg/middleware"
 	"github.com/nancyhamdan/TodoList-App/pkg/models"
+	"github.com/nancyhamdan/TodoList-App/pkg/utils"
 
 	"github.com/gorilla/mux"
 	"github.com/nancyhamdan/TodoList-App/pkg/handlers"
@@ -41,7 +42,9 @@ func main() {
 	}
 	fmt.Println("running on port:", port)
 
+	utils.LoadTemplates("../web/templates/*.gohtml")
 	models.InitDb()
 	router := createRouter()
+
 	http.ListenAndServe(":"+port, router)
 }

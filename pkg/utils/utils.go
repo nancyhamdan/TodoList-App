@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"html/template"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/nancyhamdan/TodoList-App/pkg/auth"
 )
@@ -21,4 +23,14 @@ func GetCurrentUsername(cookie *http.Cookie) (string, error) {
 	}
 
 	return (*claims)["username"].(string), nil
+}
+
+var templates *template.Template
+
+func LoadTemplates(pattern string) {
+	templates = template.Must(template.ParseGlob(pattern))
+}
+
+func ExecTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
+	templates.ExecuteTemplate(w, tmplName, data)
 }

@@ -2,11 +2,9 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
-	"text/template"
 
 	"github.com/nancyhamdan/TodoList-App/pkg/auth"
 	"github.com/nancyhamdan/TodoList-App/pkg/models"
@@ -18,8 +16,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func SignUpGetHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("../web/templates/signup.gohtml"))
-	tmpl.Execute(w, nil)
+	utils.ExecTemplate(w, "signup", nil)
 }
 
 func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -29,14 +26,13 @@ func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
 	user.Username = r.PostForm.Get("username")
 	user.Password = r.PostForm.Get("password")
 
-	tmpl := template.Must(template.ParseFiles("../web/templates/signup.gohtml"))
 	err := models.AddUser(&user)
 	if err == models.ErrUsernameTaken {
-		tmpl.Execute(w, "Username already exists")
+		utils.ExecTemplate(w, "signup", "Username already exists")
 		return
 	} else if err != nil {
 		log.Println(err)
-		tmpl.Execute(w, "Sorry, something went wrong please try again")
+		utils.ExecTemplate(w, "signup", "Sorry, something went wrong please try again")
 		return
 	}
 
@@ -44,8 +40,7 @@ func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginGetHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("../web/templates/login.gohtml"))
-	tmpl.Execute(w, nil)
+	utils.ExecTemplate(w, "login", nil)
 }
 
 func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -55,19 +50,18 @@ func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 	user.Username = r.PostForm.Get("username")
 	user.Password = r.PostForm.Get("password")
 
-	tmpl := template.Must(template.ParseFiles("../web/templates/login.gohtml"))
 	err := user.Authenticate()
 	if err != nil {
 		switch err {
 		case models.ErrUserDoesNotExist:
-			tmpl.Execute(w, "Username does not exist")
+			utils.ExecTemplate(w, "login", "Username does not exist")
 			return
 		case models.ErrInvalidLogin:
-			tmpl.Execute(w, "Invalid login, wrong username or password")
+			utils.ExecTemplate(w, "login", "Invalid login, wrong username or password")
 			return
 		default:
 			log.Println(err)
-			tmpl.Execute(w, "Sorry, something went wrong please try again")
+			utils.ExecTemplate(w, "login", "Sorry, something went wrong please try again")
 			return
 		}
 	}
@@ -193,15 +187,7 @@ func GetTasksHandler(w http.ResponseWriter, r *http.Request, getTasksFunc models
 		return
 	}
 
-	tmplPath := fmt.Sprintf("../web/templates/%s.gohtml", tmplToExec)
-
-	tmpl := template.Must(template.ParseFiles(tmplPath, "../web/templates/task.gohtml"))
-	err = tmpl.ExecuteTemplate(w, tmplToExec, tasks)
-	if err != nil {
-		log.Println(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	utils.ExecTemplate(w, tmplToExec, tasks)
 }
 
 func GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
