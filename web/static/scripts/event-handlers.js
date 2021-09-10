@@ -49,6 +49,8 @@ window.onclick = function(event) {
 
 }
 
+document.addEventListener('DOMContentLoaded', checkCompletedTasks)
+
 document.getElementById('add-btn').addEventListener('click', showAddTaskModal);
 document.getElementById('add-modal-close').addEventListener('click', hideAddTaskModal);
 document.getElementById('add-modal-cancel').addEventListener('click', hideAddTaskModal);
