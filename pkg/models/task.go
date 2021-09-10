@@ -15,7 +15,7 @@ type Task struct {
 	IsCompleted bool   `json:"isCompleted"`
 }
 
-func AddTask(task *Task, username string) error {
+func AddTask(task *Task, username string) (int64, error) {
 	var err error
 	var res sql.Result
 
@@ -29,22 +29,22 @@ func AddTask(task *Task, username string) error {
 
 	if err != nil {
 		log.Println(err)
-		return err
+		return 0, err
 	}
 
 	taskId, err := res.LastInsertId()
 	if err != nil {
 		log.Println(err)
-		return err
+		return 0, err
 	}
 
 	_, err = db.Exec("INSERT INTO TasksByUser VALUES(?, ?)", taskId, username)
 	if err != nil {
 		log.Println(err)
-		return err
+		return 0, err
 	}
 
-	return nil
+	return taskId, nil
 }
 
 func UpdateTask(newTask *Task) error {
