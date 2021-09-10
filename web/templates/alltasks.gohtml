@@ -18,17 +18,20 @@
     <section class="page">
         <div id="nav-bar">
             <ul id="nav-menu">
-                <li><a class="flexbox" href="">Today</a></li>
-                <li><a class="flexbox" href="">Important</a></li>
-                <li><a class="flexbox" href="">Planned</a></li>
-                <li><a class="flexbox active-nav" href="">All Tasks</a></li>
+                <li><a class="flexbox" href="/">Today</a></li>
+                <li><a class="flexbox" href="/tasks/important">Important</a></li>
+                <li><a class="flexbox" href="/tasks/planned">Planned</a></li>
+                <li><a class="flexbox active-nav" href="/tasks">All Tasks</a></li>
             </ul>
+            <div class="flexbox logout-container">
+                <a class="flexbox" id="logout-btn" href="/logout">Logout</a>
+            </div>
         </div>
         <div class="flexbox" id="main-content">
             
             <div class="flexbox" id="tasks-container">
                 {{- $length := len .}}
-                <span class="no-tasks-msg {{if eq $length 0}}hidden{{- end}}">There arent any tasks here yet.</span>
+                <span class="no-tasks-msg {{if ne $length 0}}hidden{{- end}}">There arent any tasks here yet.</span>
                 <div class="uncompleted-tasks flexbox">
                     {{- range $id, $task := .}}
                         {{- if eq $task.IsCompleted false}}
