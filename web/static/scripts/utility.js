@@ -42,6 +42,9 @@ function getMonth(monthText) {
 }
 
 function getDate(displayDate) {
+    if (displayDate == '') {
+        return displayDate;
+    }
     let day = displayDate.slice(5, 7)
     let monthText = displayDate.slice(8, 11);
     let year = displayDate.slice(12, );
@@ -54,34 +57,40 @@ function convertToJSON(obj) {
     return JSON.stringify(obj);
 }
 
+function getIsSelectedTaskCompleted() {
+    let isCompleted = selectedTask.querySelector('.complete-circle')
+    return isCompleted.classList.contains('checked') == true ? true : false;
+}
+
 function getSelectedTaskID() {
-    return selectedTask.id;
+    return Number(selectedTask.id);
 }
 
 function getModalFields(modal) {
     return {
-        taskDesc: modal.querySelector('.modal-input[type="text"]'),
+        description: modal.querySelector('.modal-input[type="text"]'),
         dueDate: modal.querySelector('.modal-input[type="date"]'),
         isToday: modal.querySelector('.fa-sun'),
-        isImp: modal.querySelector('.fa-star')
+        isImportant: modal.querySelector('.fa-star')
     }
 }
 
 function createTaskInfoFromModal(fields) {
     let task = {};
-    task.taskDesc = fields.taskDesc.value;
+    task.ID = 0;
+    task.description = fields.description.value;
     task.dueDate = fields.dueDate.value;
     fields.isToday.classList.contains('today') == true ? task.isToday = true : task.isToday = false;
-    fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
+    fields.isImportant.classList.contains('important') == true ? task.isImportant = true : task.isImportant = false;
     return task;
 }
 
 function getSelectedTaskFields() {
     return {
-        taskDesc: selectedTask.querySelector('.task-desc'),
+        description: selectedTask.querySelector('.task-desc'),
         dueDate: selectedTask.querySelector('.task-dueDate'),
         isToday: selectedTask.dataset.isToday,
-        isImp: selectedTask.querySelector('.important-star'),
+        isImportant: selectedTask.querySelector('.important-star'),
         isCompleted: selectedTask.querySelector('.complete-circle')
     }
 }
@@ -90,17 +99,22 @@ function createSelectedTaskInfo() {
     let fields = getSelectedTaskFields();
     let task = {};
     task.ID = getSelectedTaskID();
-    task.taskDesc = fields.taskDesc.innerHTML;
+    task.description = fields.description.innerHTML;
     task.dueDate = getDate(fields.dueDate.innerHTML);
-    task.isToday = fields.isToday;
-    fields.isImp.classList.contains('important') == true ? task.isImp = true : task.isImp = false;
+    task.isToday = Boolean(fields.isToday);
+    fields.isImportant.classList.contains('important') == true ? task.isImportant = true : task.isImportant = false;
     fields.isCompleted.classList.contains('checked') == true ? task.isCompleted = true : task.isCompleted = false;
     return task;
 }
 
-function httpPOST(url, json) {
+function httpRequest(method, url, json) {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
+    xhr.open(method, url, false);
     xhr.setRequestHeader('Content-Type', 'application/json');
+    let response;
+    xhr.onload = function() {
+        response = this.responseText;
+    }
     xhr.send(json);
+    return response
 }
