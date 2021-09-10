@@ -31,10 +31,10 @@ function deselectOtherTasks() {
 
 function resetFields(modal) {
     let fields = getModalFields(modal);
-    fields.taskDesc.value = '';
+    fields.description.value = '';
     fields.dueDate.value = '';
     fields.isToday.classList.remove('today');
-    fields.isImp.classList.remove('important');
+    fields.isImportant.classList.remove('important');
 }
 
 // addTask adds a given task to the uncompleted tasks
@@ -42,14 +42,14 @@ function addTask(task) {
     let html = '<div class="task-container flexbox" id="' + task.ID + '" ' + (task.isToday == true ? ' data-is-Today="true">' : ' data-is-Today="false">');
     html += '<a class="fa fa-circle icon complete-circle"></a>';
     html += '<div class="task-text">';
-    html += '<div class="task-desc">' + task.taskDesc + '</div>';
+    html += '<div class="task-desc">' + task.description + '</div>';
     if (task.dueDate != "") {
         html += '<div class="task-dueDate">' + getDisplayDate(task.dueDate) + '</div>';
     } else {
         html += '<div class="task-dueDate hidden"></div>';
     }
     html += '</div>';
-    html += '<a class="fa fa-star icon important-star' + (task.isImp == true ? ' important">' : '">') + '</a>';
+    html += '<a class="fa fa-star icon important-star' + (task.isImportant == true ? ' important">' : '">') + '</a>';
     html += '</div>';
 
     let noTasksMsg = document.getElementsByClassName('no-tasks-msg')[0]
@@ -70,7 +70,7 @@ function shouldDeleteTask(task) {
             }
             break;
         case 'Important':
-            if (task.isImp == false) {
+            if (task.isImportant == false) {
                 return true;
             }
             break;
@@ -87,7 +87,7 @@ function shouldDeleteTask(task) {
 function updateTask(newTask) {
     let shouldTaskBeDeleted = shouldDeleteTask(newTask);
     if (shouldTaskBeDeleted == false) {
-        selectedTask.querySelector('.task-desc').innerHTML = newTask.taskDesc;
+        selectedTask.querySelector('.task-desc').innerHTML = newTask.description;
 
         let taskDueDate = selectedTask.querySelector('.task-dueDate');
         taskDueDate.innerHTML = getDisplayDate(newTask.dueDate);
@@ -97,8 +97,8 @@ function updateTask(newTask) {
 
         newTask.isToday == true ? selectedTask.dataset.isToday = true : selectedTask.dataset.isToday = false;
 
-        let isImp = selectedTask.querySelector('.important-star');
-        newTask.isImp == true ? isImp.classList.add('important') : isImp.classList.remove('important');
+        let isImportant = selectedTask.querySelector('.important-star');
+        newTask.isImportant == true ? isImportant.classList.add('important') : isImportant.classList.remove('important');
     } else {
         deleteTask(selectedTask.id);
     }
@@ -117,7 +117,6 @@ function deleteTask(taskID) {
     }
     if (uncompletedTasks.children.length == 0 && shouldHideButtons == true) {
         hideButtons();
-        console.log(document.getElementsByClassName('no-tasks-msg hidden'));
         document.getElementsByClassName('no-tasks-msg')[0].classList.remove('hidden');
     }
 }
@@ -136,8 +135,8 @@ function showAddTaskModal() {
         isToday.classList.add('today');
     }
     if (page == 'Important') {
-        let isImp = addModal.querySelector('.fa-star');
-        isImp.classList.add('important');
+        let isImportant = addModal.querySelector('.fa-star');
+        isImportant.classList.add('important');
     }
 
     document.getElementById('add-modal').style.display = "flex";
@@ -151,15 +150,15 @@ function hideAddTaskModal() {
 // showUpdateTaskModal displays the update task modal by getting the selected task's info and filling the modal with it
 function showUpdateTaskModal() {
     let updateModal = document.getElementById('update-modal');
-    let taskDesc = updateModal.querySelector('.modal-input[type="text"]');
+    let description = updateModal.querySelector('.modal-input[type="text"]');
     let dueDate = updateModal.querySelector('.modal-input[type="date"]');
     let isToday = updateModal.querySelector('.fa-sun');
-    let isImp = updateModal.querySelector('.fa-star');
+    let isImportant = updateModal.querySelector('.fa-star');
 
-    taskDesc.value = selectedTask.querySelector('.task-desc').innerHTML;
+    description.value = selectedTask.querySelector('.task-desc').innerHTML;
     dueDate.value = getDate(selectedTask.querySelector('.task-dueDate').innerHTML);
     selectedTask.dataset.isToday == 'true' ? isToday.classList.add('today') : isToday.classList.remove('today');
-    selectedTask.querySelector('.important-star').classList.contains('important') == true ? isImp.classList.add('important') : isImp.classList.remove('important');
+    selectedTask.querySelector('.important-star').classList.contains('important') == true ? isImportant.classList.add('important') : isImportant.classList.remove('important');
 
     updateModal.style.display = "flex";
 }
@@ -174,6 +173,13 @@ function showDeleteTaskModal() {
 
 function hideDeleteTaskModal() {
     document.getElementById('delete-modal').style.display = "none";
+}
+
+function checkCompletedTasks() {
+    let completedTasks = document.getElementsByClassName("completed-tasks")[0];
+    if (completedTasks.children.length == 1) {
+        document.getElementById('completed-div').style.display = 'none';
+    }
 }
 
 // toggleTaskComplete marks a task as comepleted or uncompleted depending on the task's state (checked or not) 
@@ -214,7 +220,12 @@ function toggleIsImportant(icon) {
     let page = document.getElementById('page').dataset.page;
     if (page == 'Important' && icon.closest('#add-modal')) {
         alert('To add a task in the "Important" list need to have the "Mark as Important" option');
+        return false
     } else {
         icon.classList.contains('important') == true ? icon.classList.remove('important') : icon.classList.add('important');
+        if (page == 'Important') {
+            return true
+        }
+        return false
     }
 }
