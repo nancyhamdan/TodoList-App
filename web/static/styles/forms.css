@@ -12,6 +12,7 @@
     width: 100vw;
     height: 100vh;
     background-color: #F4F1DE;
+    flex-direction: column;
 }
 
 #form-container {
@@ -43,6 +44,14 @@
     margin-top: 1vh;
     margin-bottom: 1vh;
     display: none;
+}
+
+.server-error-msg {
+    display: block;
+    width: 33%;
+    background-color: #C81D25;
+    padding: 2vh;
+    margin-top: 2vh;
 }
 
 .input {
