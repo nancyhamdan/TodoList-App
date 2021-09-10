@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"text/template"
 
 	"github.com/nancyhamdan/TodoList-App/pkg/auth"
@@ -12,31 +13,34 @@ import (
 	"github.com/nancyhamdan/TodoList-App/pkg/utils"
 )
 
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/tasks/today", http.StatusFound)
+}
+
 func SignUpGetHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("../web/templates/signup.gohtml"))
 	tmpl.Execute(w, nil)
 }
 
 func SignUpPostHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
 	var user models.User
+	user.Username = r.PostForm.Get("username")
+	user.Password = r.PostForm.Get("password")
 
-	err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	err = models.AddUser(&user)
+	tmpl := template.Must(template.ParseFiles("../web/templates/signup.gohtml"))
+	err := models.AddUser(&user)
 	if err == models.ErrUsernameTaken {
-		w.WriteHeader(http.StatusBadRequest)
-		// return template saying username is taken
+		tmpl.Execute(w, "Username already exists")
+		return
 	} else if err != nil {
 		log.Println(err)
-		w.WriteHeader(http.StatusInternalServerError)
+		tmpl.Execute(w, "Sorry, something went wrong please try again")
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	// http.Redirect(w, r, "/login", http.StatusFound)
+
+	http.Redirect(w, r, "/login", http.StatusFound)
 }
 
 func LoginGetHandler(w http.ResponseWriter, r *http.Request) {
@@ -45,26 +49,25 @@ func LoginGetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
 	var user models.User
+	user.Username = r.PostForm.Get("username")
+	user.Password = r.PostForm.Get("password")
 
-	err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	err = user.Authenticate()
+	tmpl := template.Must(template.ParseFiles("../web/templates/login.gohtml"))
+	err := user.Authenticate()
 	if err != nil {
 		switch err {
 		case models.ErrUserDoesNotExist:
-			w.WriteHeader(http.StatusBadRequest)
+			tmpl.Execute(w, "Username does not exist")
 			return
 		case models.ErrInvalidLogin:
-			w.WriteHeader(http.StatusBadRequest)
+			tmpl.Execute(w, "Invalid login, wrong username or password")
 			return
 		default:
 			log.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
+			tmpl.Execute(w, "Sorry, something went wrong please try again")
 			return
 		}
 	}
@@ -81,7 +84,16 @@ func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 		Value: token,
 	})
 
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/tasks/today", http.StatusFound)
+}
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:   "token",
+		MaxAge: -1,
+	})
+
+	http.Redirect(w, r, "/login", http.StatusFound)
 }
 
 func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
@@ -93,6 +105,7 @@ func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	cookie, err := r.Cookie("token")
 	if err != nil {
 		log.Println(err)
@@ -106,13 +119,16 @@ func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.AddTask(&task, username)
+	taskId, err := models.AddTask(&task, username)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	taskIdStr := []byte(strconv.Itoa(int(taskId)))
 	w.WriteHeader(http.StatusOK)
+	w.Write(taskIdStr)
 }
 
 func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
