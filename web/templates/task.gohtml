@@ -1,6 +1,6 @@
 {{define "task"}}
     <div class="task-container flexbox" id="{{.ID}}" data-is-Today="{{.IsToday}}">
-        <a class="fa fa-circle icon complete-circle {{if eq (.IsCompleted) (true)}}{{"checked"}}{{end}}"></a>
+        <a class="fa {{if eq (.IsCompleted) (true)}}{{"checked fa-check-circle"}}{{else}}{{"fa-circle"}}{{end}} icon complete-circle"></a>
         <div class="task-text">
             <div class="task-desc">{{.Description}}</div>
                 <div class="task-dueDate">{{if ne (.DueDate) ("")}}{{.GetFormattedDueDate}}{{end}}</div>
