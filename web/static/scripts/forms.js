@@ -19,7 +19,6 @@ function HideError(elementID, inputField) {
 }
 
 function validateForm() {
-    console.log('inside validateForm func');
     let usernameErr = passwordErr = true;
 
     let regex;
@@ -29,9 +28,11 @@ function validateForm() {
     if (username.value.trim() == "") {
         DisplayError('username-err', 'Please enter your username', username);
     } else {
-        regex = /^[a-zA-z]+$/;
+        regex = /^[a-zA-z]{1}([a-zA-z]|\.|[0-9])+$/;
         if (regex.test(username.value.trim()) == false) {
-            DisplayError('username-err', 'username can only contain letters', username);
+            DisplayError('username-err', 'username can must start with a letter and only contain alphanumeric characters and dots', username);
+        } else if (username.value.trim().length < 5) {
+            DisplayError('username-err', 'username must be at least 5 characters long', username);
         } else {
             HideError('username-err', username);
             usernameErr = false;
@@ -39,11 +40,10 @@ function validateForm() {
     }
 
     if (password.value.trim() == "") {
-        DisplayError('password-err', 'Please enter your last name', password);
+        DisplayError('password-err', 'Please enter your password', password);
     } else {
-        regex = /^[a-zA-z]+$/;
-        if (regex.test(password.value.trim()) == false) {
-            DisplayError('password-err', 'password can only contain letters', password);
+        if (password.value.trim().length < 8) {
+            DisplayError('password-err', 'password must be at least 8 characters long', password);
         } else {
             HideError('password-err', password);
             passwordErr = false;
@@ -51,11 +51,11 @@ function validateForm() {
     }
 
 
-    if (usernameErr || passwordErr || emailErr || messageErr) {
+    if (usernameErr || passwordErr) {
         return false;
     } else {
-        let info = 'First name: ' + username.value + ', Last name: ' + password.value + ', email: ' + email.value + ', message: ' + message.value;
-        alert('About to submit: \n' + info);
+        username.value = username.value.trim()
+        password.value = password.value.trim()
         return true;
     }
 }
