@@ -66,6 +66,7 @@ func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// if user authenticated fine, create token cookie
 	token, err := auth.CreateToken(user.Username)
 	if err != err {
 		log.Println(err)
@@ -82,6 +83,7 @@ func LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	// delete cookie on logout
 	http.SetCookie(w, &http.Cookie{
 		Name:   "token",
 		MaxAge: -1,
@@ -100,6 +102,7 @@ func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// get username from cookie
 	cookie, err := r.Cookie("token")
 	if err != nil {
 		log.Println(err)
@@ -113,6 +116,7 @@ func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// add task to the database and return the id created for the task
 	taskId, err := models.AddTask(&task, username)
 	if err != nil {
 		log.Println(err)
@@ -165,6 +169,9 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// GetTasksHandler is a general handler for getting tasks of a user.
+// GetTasksHandler is used by all get tasks handlers as they all do the same operations
+// but differ in the GetTasksFunc and template they use.
 func GetTasksHandler(w http.ResponseWriter, r *http.Request, getTasksFunc models.GetTasksFunc, tmplToExec string) {
 	cookie, err := r.Cookie("token")
 	if err != nil {

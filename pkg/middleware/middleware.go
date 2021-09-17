@@ -7,6 +7,8 @@ import (
 	"github.com/nancyhamdan/TodoList-App/pkg/auth"
 )
 
+// AuthRequired is a middleware function that ensures a user is authenticated before using the API.
+// A user is authenticated if they have a valid token cookie.
 func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("token")

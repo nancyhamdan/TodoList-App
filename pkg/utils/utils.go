@@ -10,6 +10,7 @@ import (
 	"github.com/nancyhamdan/TodoList-App/pkg/auth"
 )
 
+// GetCurrentUsername returns username stored in token cookie
 func GetCurrentUsername(cookie *http.Cookie) (string, error) {
 	tokenString := cookie.Value
 	claims := &jwt.MapClaims{}

@@ -82,6 +82,7 @@ func (user *User) Authenticate() error {
 		return err
 	}
 
+	// compare the hashed password that is stored in the db with the password the user logged in with
 	err = auth.CompareHashPass(hashedPassword, user.Password)
 	if err == bcrypt.ErrMismatchedHashAndPassword {
 		return ErrInvalidLogin
@@ -100,8 +101,11 @@ func (user *User) GetHashedPassword() (string, error) {
 	return hashedPassword, nil
 }
 
+// GetTasksFunc is a general function type of funcs that get a user's tasks
 type GetTasksFunc func(username string) ([]*Task, error)
 
+// GetTasks gets tasks of a user based on some query.
+// GetTasks is used by all funcs of type GetTasksFunc as they all do the same operations but differ in the query they use.
 func GetTasks(username string, query string) ([]*Task, error) {
 	res, err := db.Query(query, username)
 	if err != nil {
@@ -112,6 +116,7 @@ func GetTasks(username string, query string) ([]*Task, error) {
 
 	var tasks []*Task
 
+	// tmpDueDate is an empty interface so it can hold any type DueDate is returned as from the database
 	var tmpDueDate interface{}
 	for res.Next() {
 		var task Task
@@ -121,7 +126,9 @@ func GetTasks(username string, query string) ([]*Task, error) {
 			log.Println(err)
 			return nil, err
 		}
+
 		task.DueDate = fmt.Sprintf("%s", tmpDueDate)
+		// if the task's due date was null in the database, string representation of tmpDueDate would be "%!s(<nil>)"
 		if task.DueDate == "%!s(<nil>)" {
 			task.DueDate = ""
 		}

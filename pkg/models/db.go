@@ -9,6 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// db is the database conncetion that is used throughout the app.
 var db *sql.DB
 
 type config struct {
@@ -21,6 +22,7 @@ type config struct {
 
 var cfg config
 
+// LoadConfig loads database configuration info from a configuration file.
 func LoadConfig(filename string) {
 	configFile, err := os.Open(filename)
 	if err != nil {
@@ -33,6 +35,7 @@ func LoadConfig(filename string) {
 	}
 }
 
+// InitDb initializes the database connection.
 func InitDb() {
 	LoadConfig("../config.json")
 	var err error
