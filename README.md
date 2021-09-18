@@ -9,7 +9,7 @@ TodoList-App is a Todo List web app written in Go and vanilla JavaScript.
 3. [Add Task](#add-task)
 4. [Update Task](#update-task)
 5. [Mark Task as Important and/or Completed](#markImpCmpl)
-6. [Delete Task](#elete-task)
+6. [Delete Task](#delete-task)
 7. [Logout](#logout)
 
 <a name="login"></a>
